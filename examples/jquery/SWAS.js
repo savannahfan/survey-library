@@ -243,7 +243,7 @@ function init() {
             },
             {
               type: "comment",
-              name: "mentalComment1",
+              name: "other",
               title: "Do you have other comments?",
               visible: true,
             },
