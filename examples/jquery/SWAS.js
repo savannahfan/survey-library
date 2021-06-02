@@ -473,7 +473,7 @@ function init() {
   });*/
 
   survey.onComplete.add(function(survey,options) {
-    echo(JSON.stringify(survey.data));
+    console.log(JSON.stringify(survey.data));
     var xhr = new XMLHttpRequest();
     xhr.open("POST",  "https://e-reader.azurewebsites.net");
     xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
