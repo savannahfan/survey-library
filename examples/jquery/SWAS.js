@@ -472,16 +472,17 @@ function init() {
 
   });*/
 
-
-  survey.onComplete.add(function(results) {
-    console.log((JSON.stringify(results.data));
+  survey.onComplete.add(function(survey,options) {
+    echo(JSON.stringify(survey.data));
     var xhr = new XMLHttpRequest();
     xhr.open("POST",  "https://e-reader.azurewebsites.net");
     xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
     //var data = {surveyResult: JSON.stringify(survey.data) };
     //var dataStringify = JSON.stringify(data);
     //var self = this;
-    xhr.send(JSON.stringify(results.data));
+    xhr.send(JSON.stringify(survey.data));
+    //document.querySelector("#surveyResult").innerHTML =
+    //  "result: " + JSON.stringify(result.data);
   });
 
   $("#surveyElement").Survey({
