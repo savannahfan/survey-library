@@ -475,7 +475,7 @@ function init() {
 
 
   survey.onComplete.add(function(results) {
-    echo(JSON.stringify(results.data));
+    console.log((JSON.stringify(results.data));
     var xhr = new XMLHttpRequest();
     xhr.open("POST",  "https://e-reader.azurewebsites.net");
     xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
