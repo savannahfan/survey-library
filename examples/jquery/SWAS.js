@@ -474,7 +474,7 @@ function init() {
   });*/
 
 
-  survey.onComplete.add(function(result) {
+  survey.onComplete.add(function(survey,options) {
     echo(JSON.stringify(survey.data));
     var xhr = new XMLHttpRequest();
     xhr.open("POST",  "https://e-reader.azurewebsites.net");
