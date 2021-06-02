@@ -261,8 +261,7 @@ function init() {
   window.survey = new Survey.Model(json);
 
   survey.onCurrentPageChanged.add(function(survey, options) {
-    if (options.isPrevPage==true) return //clicking 'previous' button, we skip the following process
-    console.log(survey.currentPageNo)
+    if (options.isPrevPage==true) return //clicking 'previous' button, we skip the following proces
     for (var m = 0; m < 4; m ++){
       if (m==0){
           alternative1=survey.getQuestionByName("attention1");
