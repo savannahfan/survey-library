@@ -95,10 +95,22 @@ function init() {
 
   survey.onComplete.add(function(result) {
 
-    document.querySelector("#surveyResult").innerHTML =
-      "result: " + JSON.stringify(result.data);
-  });
+    console.log(JSON.stringify(survey.data));
+    var xhr = new XMLHttpRequest();
 
+
+    xhr.open("POST", "https://e-reader.azurewebsites.net/homepage.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+
+    xhr.onload = function() {
+    if (this.status == 200) {
+        alert(this.response);
+      }
+    }
+    xhr.send(JSON.stringify(survey.data));
+
+  });
   //survey.mode = 'display';
 
 
