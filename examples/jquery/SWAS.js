@@ -210,47 +210,55 @@ function init() {
               type: "comment",
               name: "transportationComment1",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "transportationComment2",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "emotionalComment1",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "emotionalComment2",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "attentionComment1",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "attentionComment2",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "mentalComment1",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "other",
               title: "Do you have other comments?",
               visible: true,
+              defaultValue: 'null',
             },
           ]
         }
       ],
-
+      clearInvisibleValues: 'none'
 
   };
 
@@ -261,7 +269,8 @@ function init() {
   window.survey = new Survey.Model(json);
 
   survey.onCurrentPageChanged.add(function(survey, options) {
-    if (options.isPrevPage==true) return //clicking 'previous' button, we skip the following proces
+    if (options.isPrevPage==true) return //clicking 'previous' button, we skip the following process
+    console.log(survey.currentPageNo)
     for (var m = 0; m < 4; m ++){
       if (m==0){
           alternative1=survey.getQuestionByName("attention1");
@@ -472,7 +481,8 @@ function init() {
 
   });*/
 
-  survey.onComplete.add(function(survey,options) {
+
+  survey.onComplete.add(function(result) {
     console.log(JSON.stringify(survey.data));
     var xhr = new XMLHttpRequest();
 
