@@ -475,11 +475,19 @@ function init() {
   survey.onComplete.add(function(survey,options) {
     console.log(JSON.stringify(survey.data));
     var xhr = new XMLHttpRequest();
-    xhr.open("POST",  "https://e-reader.azurewebsites.net");
-    xhr.setRequestHeader("Content-Type", "application/json; charset=utf-8");
-    //var data = {surveyResult: JSON.stringify(survey.data) };
-    //var dataStringify = JSON.stringify(data);
-    //var self = this;
+
+    xhr.open("POST", "https://e-reader.azurewebsites.net/swas.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+
+    xhr.onload = function() {
+      if (this.status == 200) {
+          alert(this.response);
+        }
+      else {
+        alert('1111'+this.status);
+      }
+    }
     xhr.send(JSON.stringify(survey.data));
     //document.querySelector("#surveyResult").innerHTML =
     //  "result: " + JSON.stringify(result.data);
