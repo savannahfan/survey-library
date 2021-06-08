@@ -292,72 +292,85 @@ function init() {
               type: "comment",
               name: "interestComment1",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "interestComment2",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "interestComment3",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "competenceComment1",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "competenceComment2",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "competenceComment3",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "choiceComment1",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "choiceComment2",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "choiceComment3",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "effortComment1",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "effortComment2",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "pressureComment1",
               visible: false,
+              defaultValue: 'null',
             },
             {
               type: "comment",
               name: "other",
               title: "Do you have other comments?",
               visible: true,
+              defaultValue: 'null',
             },
           ]
         }
       ],
-
+      clearInvisibleValues: 'none'
 
   };
 
@@ -504,14 +517,32 @@ function init() {
 
 
   survey.onComplete.add(function(result) {
-    document.querySelector("#surveyResult").innerHTML =
-      "result: " + JSON.stringify(result.data);
+    console.log(JSON.stringify(survey.data));
+    var xhr = new XMLHttpRequest();
+
+    xhr.open("POST", "https://e-reader.azurewebsites.net/taskIMI.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+
+    xhr.onload = function() {
+      if (this.status == 200) {
+          alert(this.response);
+        }
+      else {
+        alert('1111'+this.status);
+      }
+    }
+    xhr.send(JSON.stringify(survey.data));
+    //document.querySelector("#surveyResult").innerHTML =
+    //  "result: " + JSON.stringify(result.data);
   });
 
   $("#surveyElement").Survey({
     model: survey
   });
 }
+
+
 
 if (!window["%hammerhead%"]) {
   init();
