@@ -42,7 +42,7 @@ function init() {
                 name: "info",
                 //html: "<table><tr><td>Survey 1</td><td><a href='./Task-IMI.html'  target='_blank'>links1</a></td></tr><tr><td>Survey 2</td><td><a href='./E-experience.html'  target='_blank'>links2</a></td></tr><tr><td>Survey 3</td><td><a href='./SWAS.html'  target='_blank'>links3</a></td></tr></table>",
                 //<a href='https://surveyjs.io/create-survey'  target='_blank'>links</a>
-                //html: "<table><tr><td>Survey 1</td><td><a href='./researcher_homepage.html'  target='_blank'>links1</a></td></tr><tr><td>Survey 2</td><td><a href='./E-experience.html'  target='_blank'>links2</a></td></tr><tr><td>Survey 3</td><td><a href='./SWAS.html'  target='_blank'>links3</a></td></tr></table>",
+                html: "<table><tr><td>Survey 1</td><td><a href='./researcher_homepage.html'  target='_blank'>links1</a></td></tr><tr><td>Survey 2</td><td><a href='./E-experience.html'  target='_blank'>links2</a></td></tr><tr><td>Survey 3</td><td><a href='./SWAS.html'  target='_blank'>links3</a></td></tr></table>",
                 
               },
               {
