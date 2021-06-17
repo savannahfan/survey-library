@@ -1,29 +1,5 @@
 
 function init() {
-  //Add the price property into choices
-
-
-
-  function sort_object(obj) {
-    items = Object.keys(obj).map(function(key) {
-        valueMapDict={"Once a month":1,"2-3 times a month":2,"Once a week":3,"2-3 times a week":4,"4-6 times a week":5,"Once daily":6,"2-4 times daily":7,"More than 4 times daily":8};
-        return [key, valueMapDict[obj[key]]];
-    });
-
-    items.sort(function(first, second) {
-        return (second[1] - first[1]);
-    });
-    sorted_obj={}
-    $.each(items, function(k, v) {
-        use_key = v[0]
-        use_value = v[1]
-        sorted_obj[use_key] = use_value
-    })
-    return(sorted_obj)
-  }
-
-  //Register the custom function
-  Survey.FunctionFactory.Instance.register("sort_object", sort_object);
 
   var json = {
     showProgressBar: "both",
@@ -57,7 +33,15 @@ function init() {
   var flag=[0,0,0]
   survey.onComplete.add(function (result) {
         var questions=[];
-        if (survey.currentPage.name=="page1"){
+        if (survey.currentPage.name=="page1" && flag[0]==0){
+
+
+        var nothing={};
+        nothing["type"]="html";
+        nothing["name"]="nothing1";
+        nothing["html"]="<span>Please set the questions with the corresponding question type.</span>";
+
+        questions.push(nothing);
 
         number=survey.getQuestionByName('numberOfQuestion').value;
 
@@ -80,6 +64,8 @@ function init() {
               "boolean"
           ]
           questions.push(questionType);
+
+
         }
         }
         else if (survey.currentPage.name=="page2"){
@@ -92,7 +78,14 @@ function init() {
         //validation
 
         }
-        else if (survey.currentPage.name=="page3"){
+        else if (survey.currentPage.name=="page3" && flag[1]==0){
+
+        var nothing={};
+        nothing["type"]="html";
+        nothing["name"]="nothing2";
+        nothing["html"]="<span>Please write down all the tags, including the super class.(Should we have some example of super class?)</span>";
+
+        questions.push(nothing);
 
         number=survey.getQuestionByName('numberOfTag').value;
         for(var i = 0; i < number; i ++){
@@ -129,12 +122,12 @@ function init() {
             questionsTag["startWithNewLine"]=false;
             questionsTag["name"]="questionTag"+i;
             questionsTag["choices"]= tags;
-            questionsTag["title"]= "Please select tag to the Q"+(i+1);
+            questionsTag["title"]= "Please select tag to the Q"+(i+1)+". N.B. You should select the most specific more.";
             questions.push(questionsTag);
             //please annotate with the specifc classes
         }
         }
-        else if (survey.currentPage.name=="page5"){
+        else if (survey.currentPage.name=="page5" && flag[2]==0){
 
           var questionsContent={};
           questionsContent["type"]="text";
@@ -149,6 +142,8 @@ function init() {
 
         else if (survey.currentPage.name=="page6"){
 
+
+
           relations=["is_super_class_of","is_disjoint_from"];
 
           relationNumber=survey.getQuestionByName('numberOfRelation').value;
@@ -161,6 +156,14 @@ function init() {
               tags.push(tag);
 
           }
+
+        var nothing={};
+        nothing["type"]="html";
+        nothing["name"]="nothing3";
+        nothing["html"]="<span>Relation links the tag1 and tag2.</span>";
+
+        questions.push(nothing);
+
 
         for(var i = 0; i < relationNumber; i ++){
 
@@ -188,6 +191,7 @@ function init() {
             questions.push(Tag2);
 
         }
+
         }
         else{
           return
@@ -219,8 +223,7 @@ function init() {
       var oldPage = options.oldCurrentPage;
       var newPage = options.newCurrentPage;
 
-      if (newPage.visibleIndex < oldPage.visibleIndex ) {
-
+      if (newPage < oldPage) {
           if (newPage=="page1"){
             flag[0]=1;
           }
@@ -232,9 +235,17 @@ function init() {
           }
       }
       else{
+
           questions=[]
           if(oldPage=="page1" && flag[0]==1){
-              newPage.questions.forEach(function(question) { newPage.removeQuestion(question) });
+
+              survey.getAllQuestions().forEach(function(question) {
+                    if(question.page==newPage && question.name!="nothing1"){
+                        newPage.removeQuestion(question);
+                    }
+                });
+              //newPage.questions.forEach(function(question) { newPage.removeQuestion(question) });
+
               number=survey.getQuestionByName('numberOfQuestion').value;
 
               for(var i = 0; i < number; i ++){
@@ -257,9 +268,17 @@ function init() {
                 ]
                 questions.push(questionType);
               }
+              console.log("helloooo");
           }
           else if(oldPage=="page3" && flag[1]==1){
-              newPage.questions.forEach(function(question) { newPage.removeQuestion(question) });
+
+              survey.getAllQuestions().forEach(function(question) {
+                    if(question.page==newPage && question.name!="nothing2"){
+                        newPage.removeQuestion(question);
+                    }
+              });
+
+              //newPage.questions.forEach(function(question) { newPage.removeQuestion(question) });
               number=survey.getQuestionByName('numberOfTag').value;
               for(var i = 0; i < number; i ++){
                   var questionsContent={};
@@ -272,7 +291,14 @@ function init() {
 
           }
           else if(oldPage=="page6" && flag[2]==1){
-              newPage.questions.forEach(function(question) { newPage.removeQuestion(question) });
+
+              survey.getAllQuestions().forEach(function(question) {
+                    if(question.page==newPage && question.name!="nothing3"){
+                        newPage.removeQuestion(question);
+                    }
+              });
+
+              //newPage.questions.forEach(function(question) { newPage.removeQuestion(question) });
               relations=["is_super_class_of","is_disjoint_from"];
 
               relationNumber=survey.getQuestionByName('numberOfRelation').value;
@@ -314,19 +340,22 @@ function init() {
             }
 
           }
+          else{
+            return;
+          }
 
-      }
-      var Question1={};
-      Question1["questions"]=questions;
 
-      var addedSurvey = new Survey.Model(Question1);
+      var json={};
+      json["questions"]=questions;
+
+      var addedSurvey = new Survey.Model(json);
       var allAddedQuestions = addedSurvey.getAllQuestions();
       var page = newPage;
       for(var i = 0; i < allAddedQuestions.length; i ++) {
       page.addQuestion(allAddedQuestions[i]);
       }
-      //Added lines
-      survey.clear(false, false);
+      //survey.clear(false, false);
+    }
 });
 
 
