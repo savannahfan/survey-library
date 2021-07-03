@@ -1,11 +1,13 @@
 function init() {
   //Add the price property into choices
-  Survey.Serializer.addProperty("itemvalue", "price:number");
+
 
   function sort_object(obj) {
     items = Object.keys(obj).map(function(key) {
-        return [key, obj[key]];
+        valueMapDict={"Once a month":1,"2-3 times a month":2,"Once a week":3,"2-3 times a week":4,"4-6 times a week":5,"Once daily":6,"2-4 times daily":7,"More than 4 times daily":8};
+        return [key, valueMapDict[obj[key]]];
     });
+
     items.sort(function(first, second) {
         return (second[1] - first[1]);
     });
@@ -52,8 +54,8 @@ function init() {
             visibleIf: "{overallDevices.length} > 0",
             rowsVisibleIf: "{overallDevices} contains {item}",
             columns: [
-              //"Once a month", "2-3 times a month", "Once a week", "2-3 times a week", "4-6 times a week", "Once daily", "2-4 times daily","More than 4 times daily"
-                {
+              "Once a month", "2-3 times a month", "Once a week", "2-3 times a week", "4-6 times a week", "Once daily", "2-4 times daily","More than 4 times daily"
+                /*{
                     value: 1,
                     text: "Once a month"
                 }, {
@@ -77,7 +79,7 @@ function init() {
                 }, {
                     value: 8,
                     text: "More than 4 times daily"
-                }
+                }*/
               ],
               rows: [
                   "Dedicated e-reader with an e-ink screen (such as Kindle Paperwhite, Kobo or Nook)",
@@ -85,14 +87,13 @@ function init() {
                   "Laptop",
                   "Smartphone",
                   "Tablet computer (such as iPad)",
-                  "Other device with internet access such as a smartwatch or an iPod",
               ]
             },
             {
             type: "checkbox",
             name: "devicesForReading",
             visibleIf: "{frequency} notempty",
-            title: "Which of the following devices do you use for reading? The reading can be done recreationally or for work or study purposes. Select all that apply",
+            title: "Which of the following devices do you use for reading? The reading can be done recreationally or for work or study purposes. [What we mean by reading DO NOT include reading tweets or web browsing.] Select all that apply",
             isRequired: true,
             colCount: 1,
             choices: [
@@ -122,7 +123,8 @@ function init() {
             title: "How often do you use the following devices for recreational purpose?",
             visibleIf: "{textTypeForRecreation} notempty",
             columns: [
-                {
+              "Rarely, not every year","A few times a year","A few times a month","A few times a week","Everyday"
+                /*{
                     value: 1,
                     text: "Rarely, not every year"
                 }, {
@@ -137,7 +139,7 @@ function init() {
                 }, {
                     value: 5,
                     text: "Everyday"
-                }
+                }*/
               ],
               rows: [
               ]
@@ -166,7 +168,8 @@ function init() {
             title: "How often do you use the following devices for work or study purpose?",
             visibleIf: "{textTypeForWork} notempty",
             columns: [
-                {
+              "Rarely, not every year","A few times a year","A few times a month","A few times a week","Everyday"
+                /*{
                     value: 1,
                     text: "Rarely, not every year"
                 }, {
@@ -181,7 +184,7 @@ function init() {
                 }, {
                     value: 5,
                     text: "Everyday"
-                }
+                }*/
               ],
               rows: [
               ]
@@ -211,94 +214,6 @@ function init() {
 
 
 
-            /*{
-             "type": "paneldynamic",
-             "name": "generatedQuestion",
-             "title": "Please enter all blood relatives you know",
-             //"templateTitle": "Information about: {panel.relativeType}",
-             "templateElements": [
-                 {
-                     "name": "relativeType",
-                     "type": "dropdown",
-                     "title": "Relative",
-                     "choices": [
-                         "father",
-                         "mother",
-                         "brother",
-                         "sister",
-                         "son",
-                         "daughter"
-                     ],
-                     "isRequired": true
-                 },{
-                      type: "dropdown",
-                      name: "car",
-                      title: "How often do you use <device> for recreational reading of <text type>?",
-                      isRequired: true,
-                      colCount: 0,
-                      choices: [
-                          "Rarely, not every year",
-                          "A few times a year",
-                          "A few times a month",
-                          "A few times a week",
-                          "Everyday",
-                      ]
-                  },{
-
-                     "name": "isalive",
-                     "type": "radiogroup",
-                     "title": "Alive?",
-                     "startWithNewLine": false,
-                     "isRequired": true,
-                     "colCount": 0,
-                     "choices": ["Yes", "No"]
-                 }, {
-                     "name": "liveage",
-                     "type": "dropdown",
-                     "title": "Age",
-                     "isRequired": true,
-                     "startWithNewLine": false,
-                     "visibleIf": "{panel.isalive} = 'Yes'",
-                     "choicesMin": 1,
-                     "choicesMax": 115
-                 }, {
-                     "name": "deceasedage",
-                     "type": "dropdown",
-                     "title": "Deceased Age",
-                     "isRequired": true,
-                     "startWithNewLine": false,
-                     "visibleIf": "{panel.isalive} = 'No'",
-                     "choices": [
-                         {
-                             "value": -1,
-                             "text": "Unknown"
-                         }
-                     ],
-                     "choicesMin": 1,
-                     "choicesMax": 115
-                 }, {
-                     "name": "causeofdeathknown",
-                     "type": "radiogroup",
-                     "title": "Cause of Death Known?",
-                     "isRequired": true,
-                     "colCount": 0,
-                     "startWithNewLine": false,
-                     "visibleIf": "{panel.isalive} = 'No'",
-                     "choices": ["Yes", "No"]
-                 }, {
-                     "name": "causeofdeath",
-                     "type": "text",
-                     "title": "Cause of Death",
-                     "isRequired": true,
-                     "startWithNewLine": false,
-                     "visibleIf": "{panel.isalive} = 'No' and {panel.causeofdeathknown} = 'Yes'"
-                 },
-                     ]
-                 }
-             ],
-             "panelCount": 2,*/
-
-
 
 
 
@@ -320,11 +235,8 @@ function init() {
     var sorted_answers =sort_object(answers);
     var results=[];
     for(var key in sorted_answers){
-        console.log('###'+answers[key])
-        if(answers[key]>3){
-          console.log('now'+key)
           results.push(key);
-        }
+
     }
     console.log(results);
 
@@ -340,37 +252,55 @@ function init() {
     textTypeForRecreation=options.value;
     devicesForReading=survey.getQuestionByName("devicesForReading").value;
     var results=[];
+    var questionNum=0;
     for(var i = 0; i < devicesForReading.length; i ++) {
         for(var j = 0; j < textTypeForRecreation.length; j ++) {
-              var result="How often do you use <B>"+devicesForReading[i]+"</B> for <B>"+textTypeForRecreation[j]+"</B>\?"
+              if (questionNum>45)break;
+              var result="How often do you use <B>"+devicesForReading[i]+"</B> for reading <B>"+textTypeForRecreation[j]+"</B>\?"
               results.push(result);
+              questionNum+=1;
             }
       }
 
-    console.log(results);
+    frequencyForDeviceOnRecreation=survey.getQuestionByName("frequencyForDeviceOnRecreation");
+    frequencyForDeviceOnRecreation.rows=results;
+
+    if(questionNum>45){
+        textTypeForWork=survey.getQuestionByName("textTypeForWork");
+        devicesForReading=survey.getQuestionByName("frequencyForDeviceOnWork");
+        textTypeForWork.visible=false;
+        devicesForReading.visible=false;
+
+    }
 
 
-    devicesForReading=survey.getQuestionByName("frequencyForDeviceOnRecreation");
-    devicesForReading.rows=results;
 
 
   });
+
 
   survey.onValueChanged.add(function(survey, options){
 
     if (options.name !== 'textTypeForWork') return;
     //console.log(options.value);
     textTypeForWork=options.value;
+    textTypeForRecreation=survey.getQuestionByName("textTypeForRecreation").value;
     devicesForReading=survey.getQuestionByName("devicesForReading").value;
+
+    questionLimit=45-textTypeForRecreation.length*devicesForReading.length;
+    console.log('______'+questionLimit)
+
+
     var results=[];
+    var questionNum=0;
     for(var i = 0; i < devicesForReading.length; i ++) {
         for(var j = 0; j < textTypeForWork.length; j ++) {
+              if (questionNum==questionLimit) break;
               var result="How often do you use <B>"+devicesForReading[i]+"</B> for <B>"+textTypeForWork[j]+"</B>\?"
               results.push(result);
+              questionNum+=1;
             }
       }
-
-    console.log(results);
 
 
     devicesForReading=survey.getQuestionByName("frequencyForDeviceOnWork");
@@ -382,8 +312,22 @@ function init() {
 
 
   survey.onComplete.add(function(result) {
-    document.querySelector("#surveyResult").innerHTML =
-      "result: " + JSON.stringify(result.data);
+    console.log(JSON.stringify(survey.data));
+    var xhr = new XMLHttpRequest();
+
+    xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/e-experience.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+
+    xhr.onload = function() {
+      if (this.status == 200) {
+          alert(this.response);
+        }
+      else {
+        alert('1111'+this.status);
+      }
+    }
+    xhr.send(JSON.stringify(survey.data));
   });
 
 
