@@ -210,50 +210,50 @@ function init() {
               type: "comment",
               name: "transportationComment1",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "transportationComment2",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "emotionalComment1",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "emotionalComment2",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "attentionComment1",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "attentionComment2",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "mentalComment1",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "other",
               title: "Do you have other comments?",
               visible: true,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
           ]
         }
@@ -336,7 +336,7 @@ function init() {
                j=i;
                minValue=alternatives[i].value;
              }
-          if (alternatives[i].value<=4){
+          if (alternatives[i].value>=4){
               agreeList.push(alternatives[i]);
             }
           else {
@@ -348,7 +348,7 @@ function init() {
 
       var selectedList=[]
       if (maxValue>4 && minValue<=4){
-          if (agreeList.length>disagreeList.length){ //choosing all disagreed questions
+          if (agreeList.length>=disagreeList.length){ //choosing all disagreed questions
               selectedList=disagreeList;
           }
           else{
@@ -357,12 +357,14 @@ function init() {
 
           for (var i = 0; i < selectedList.length; i ++) {
               comments[i].visible=true;
+              comments[i].isRequired=true;
               comments[i].title=modifyCommentQuestion(selectedList[i].value,selectedList[i].title);
           }
 
 
           for (var j = selectedList.length; j < comments.length; j ++) {
               comments[j].visible=false;
+              comments[j].isRequired=false;
           }
 
 
@@ -370,123 +372,35 @@ function init() {
       else{
           for (var j =0; j < comments.length; j ++) {
               comments[j].visible=false;
+              comments[j].isRequired=false;
           }
       }
     }
   });
 
-  /*survey.onValueChanged.add(function(survey, options){
-    if(options.name !== "attention5" && options.name !== "transportation5" && options.name !== "emotional5" && options.name !== "mental3") return;
-    //options.value 答案
-    //options.question.title
-    //option.obj
 
-    if (options.name == "attention5" ){
-        alternative1=survey.getQuestionByName("attention2");
-        alternative2=survey.getQuestionByName("attention3");
-        alternative3=survey.getQuestionByName("attention4");
-        alternative4=survey.getQuestionByName("attention1");
-        var alternatives=[alternative1,alternative2,alternative3,alternative4,options.question];
-
-        comment1=survey.getQuestionByName("attentionComment1");
-        comment2=survey.getQuestionByName("attentionComment2");
-        var comments=[comment1,comment2]
-    }
-    else if (options.name == "transportation5" ){
-        alternative1=survey.getQuestionByName("transportation1");
-        alternative2=survey.getQuestionByName("transportation2");
-        alternative3=survey.getQuestionByName("transportation3");
-        alternative4=survey.getQuestionByName("transportation4");
-        var alternatives=[alternative1,alternative2,alternative3,alternative4,options.question];
-
-        comment1=survey.getQuestionByName("transportationComment1");
-        comment2=survey.getQuestionByName("transportationComment2");
-        var comments=[comment1,comment2]
-    }
-    else if (options.name == "emotional5" ){
-        alternative1=survey.getQuestionByName("emotional1");
-        alternative2=survey.getQuestionByName("emotional2");
-        alternative3=survey.getQuestionByName("emotional3");
-        alternative4=survey.getQuestionByName("emotional4");
-        var alternatives=[alternative1,alternative2,alternative3,alternative4,options.question];
-
-        comment1=survey.getQuestionByName("emotionalComment1");
-        comment2=survey.getQuestionByName("emotionalComment2");
-        var comments=[comment1,comment2]
-    }
-    else {
-        alternative1=survey.getQuestionByName("mental1");
-        alternative2=survey.getQuestionByName("mental2");
-        var alternatives=[alternative1,alternative2,options.question];
-
-        comment1=survey.getQuestionByName("mentalComment1");
-        var comments=[comment1]
-    }
-
-
-    var k=0;
-    var maxValue=alternatives[k].value;
-    var j=0;
-    var minValue=alternatives[j].value;
-
-    var disagreeList=[]
-    var agreeList= []
-
-    for(var i = 0; i < alternatives.length; i ++) {
-        if (alternatives[i].value>maxValue){
-             k=i;
-             maxValue=alternatives[i].value;
-           }
-        if (alternatives[i].value<minValue){
-             j=i;
-             minValue=alternatives[i].value;
-           }
-        if (alternatives[i].value<=4){
-            agreeList.push(alternatives[i]);
-          }
-        else {
-            disagreeList.push(alternatives[i]);
-          }
-
-
-    }
-
-    var selectedList=[]
-    if (maxValue>4 && minValue<=4){
-
-        if (agreeList.length>disagreeList.length){ //choosing all disagreed questions
-            selectedList=disagreeList;
-        }
-        else{
-            selectedList=agreeList;
-        }
-
-        for (var i = 0; i < selectedList.length; i ++) {
-            comments[i].visible=true;
-            comments[i].title=modifyCommentQuestion(selectedList[i].value,selectedList[i].title);
-        }
-
-
-        for (var j = selectedList.length; i < comments.length; j ++) {
-            comments[j].visible=false;
-        }
-
-      }
-    else{
-        for (var j =0; i < comments.length; j ++) {
-            comments[j].visible=false;
-        }
-    }
-
-
-  });*/
 
 
   survey.onComplete.add(function(result) {
     console.log(JSON.stringify(survey.data));
+
+    var resultData = survey.data;
+    var questions = survey.getAllQuestions();
+    for(var i = 0; i < questions.length; i ++) {
+      var q = questions[i];
+      var key = q.getValueName();
+      //do nothing if question is answered
+      if(resultData[key]) continue;
+      //optionaly ignore invisible questions
+      //if(!q.isVisible) continue;
+      //set null for unanswered questions
+      resultData[key] = null;
+    }
+
+    console.log(JSON.stringify(resultData));
     var xhr = new XMLHttpRequest();
 
-    xhr.open("POST", "https://e-reader.azurewebsites.net/swas.php", true);
+    xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/swas.php", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 
@@ -498,7 +412,9 @@ function init() {
         alert('1111'+this.status);
       }
     }
-    xhr.send(JSON.stringify(survey.data));
+    xhr.send(JSON.stringify(resultData));
+    console.log(JSON.stringify(resultData))
+
     //document.querySelector("#surveyResult").innerHTML =
     //  "result: " + JSON.stringify(result.data);
   });
