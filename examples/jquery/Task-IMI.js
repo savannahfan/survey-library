@@ -16,7 +16,7 @@ function init() {
         6:"agree",
         7:"agree"
       };
-      console.log("Why do you "+ dict[value] +"on \'"+ question+"\'\?")
+      console.log("Why do you "+ dict[value] +" on \'"+ question+"\'\?")
       return "Why do you "+ dict[value] +" on \'"+ question+"\'\?"
   };
 
@@ -289,83 +289,129 @@ function init() {
         },{
             questions:[
             {
+              type: "rating",
+              name: "overalChoice",
+              title: "Do you feel choice?",
+              minRateDescription: "not at all true",
+              maxRateDescription: "very true",
+              rateMax: 7,
+              visible: false,
+            },
+            {
+              type: "rating",
+              name: "overalInterest",
+              title: "Do you feel interest?",
+              minRateDescription: "not at all true",
+              maxRateDescription: "very true",
+              rateMax: 7,
+              visible: false,
+            },
+            {
+              type: "rating",
+              name: "overalCompetence",
+              title: "Do you feel competence?",
+              minRateDescription: "not at all true",
+              maxRateDescription: "very true",
+              rateMax: 7,
+              visible: false,
+            },
+            {
+              type: "rating",
+              name: "overalEffort",
+              title: "Do you feel effort?",
+              minRateDescription: "not at all true",
+              maxRateDescription: "very true",
+              rateMax: 7,
+              visible: false,
+            },
+            {
+              type: "rating",
+              name: "overalPressure",
+              title: "Do you feel pressure?",
+              minRateDescription: "not at all true",
+              maxRateDescription: "very true",
+              rateMax: 7,
+              visible: false,
+            },
+
+            {
               type: "comment",
               name: "interestComment1",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "interestComment2",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "interestComment3",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "competenceComment1",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "competenceComment2",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "competenceComment3",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "choiceComment1",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "choiceComment2",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "choiceComment3",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "effortComment1",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "effortComment2",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "pressureComment1",
               visible: false,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
             {
               type: "comment",
               name: "other",
               title: "Do you have other comments?",
               visible: true,
-              defaultValue: 'null',
+              //defaultValue: 'null',
             },
           ]
         }
@@ -398,6 +444,8 @@ function init() {
           comment2=survey.getQuestionByName("choiceComment2");
           comment3=survey.getQuestionByName("choiceComment3");
           var comments=[comment1,comment2,comment3];
+          var overalquestion=survey.getQuestionByName("overalChoice");
+
       }
       else if (m==1){
           alternative1=survey.getQuestionByName("interest1");
@@ -413,6 +461,7 @@ function init() {
           comment2=survey.getQuestionByName("interestComment2");
           comment3=survey.getQuestionByName("interestComment3");
           var comments=[comment1,comment2,comment3];
+          overalquestion=survey.getQuestionByName("overalInterest");
       }
       else if (m==2){
           alternative1=survey.getQuestionByName("competence1");
@@ -426,6 +475,7 @@ function init() {
           comment1=survey.getQuestionByName("competenceComment1");
           comment2=survey.getQuestionByName("competenceComment2");
           var comments=[comment1,comment2];
+          var overalquestion=survey.getQuestionByName("overalCompetence");
       }
       else if (m==3){
           alternative1=survey.getQuestionByName("effort1");
@@ -438,6 +488,7 @@ function init() {
           comment1=survey.getQuestionByName("effortComment1");
           comment2=survey.getQuestionByName("effortComment2");
           var comments=[comment1,comment2];
+          var overalquestion=survey.getQuestionByName("overalEffort");
       }
       else {
           alternative1=survey.getQuestionByName("pressure1");
@@ -446,28 +497,44 @@ function init() {
 
           comment1=survey.getQuestionByName("pressureComment1");
           var comments=[comment1];
+          var overalquestion=survey.getQuestionByName("overalPressure");
 
       }
 
 
+      var alternativesValue=[];
+      for (var i=0; i<alternatives.length; i++){
+        alternativesValue.push(alternatives[i].value);
+      }
+
+
+      var changeInverseValueDict={0:[0,1,2,4,5],1:[1,5],3:[1,3],4:[0,1]};
+      if (changeInverseValueDict.hasOwnProperty(m)){
+        for(var i=0; i<changeInverseValueDict[m].length; i++){
+            var idx=changeInverseValueDict[m][i];
+             alternativesValue[idx]=7-alternativesValue[idx];
+        }
+      }
+
+
       var k=0;
-      var maxValue=alternatives[k].value;
+      var maxValue=alternativesValue[k];
       var j=0;
-      var minValue=alternatives[j].value;
+      var minValue=alternativesValue[j];
 
       var disagreeList=[]
       var agreeList= []
 
       for(var i = 0; i < alternatives.length; i ++) {
-          if (alternatives[i].value>maxValue){
+          if (alternativesValue[i]>maxValue){
                k=i;
-               maxValue=alternatives[i].value;
+               maxValue=alternativesValue[i];
              }
-          if (alternatives[i].value<minValue){
+          if (alternativesValue[i]<minValue){
                j=i;
-               minValue=alternatives[i].value;
+               minValue=alternativesValue[i];
              }
-         if (alternatives[i].value<=4){
+         if (alternativesValue[i]>=4){
              agreeList.push(alternatives[i]);
            }
          else {
@@ -479,15 +546,9 @@ function init() {
 
       var selectedList=[]
       if (maxValue>4 && minValue<=4){
-
-          if (m==4){ //for pressure
-            comments[0].visible=true;
-            comments[0].title=modifyCommentQuestion(alternatives[j].value, alternatives[j].title);
-            continue;
-          }
-
-
-          if (agreeList.length>disagreeList.length){ //choosing all disagreed questions
+          overalquestion.visible=true;
+          overalquestion.isRequired=true;
+          if (agreeList.length>=disagreeList.length){ //choosing all disagreed questions
               selectedList=disagreeList;
           }
           else{
@@ -496,19 +557,26 @@ function init() {
 
           for (var i = 0; i < selectedList.length; i ++) {
               comments[i].visible=true;
+              comments[i].isRequired=true;
               comments[i].title=modifyCommentQuestion(selectedList[i].value,selectedList[i].title);
+
           }
 
 
           for (var j = selectedList.length; j < comments.length; j ++) {
               comments[j].visible=false;
+              comments[j].isRequired=false;
           }
 
 
         }
       else{
+
+          overalquestion.visible=false;
+          overalquestion.isRequired=false;
           for (var j =0; j < comments.length; j ++) {
               comments[j].visible=false;
+              comments[j].isRequired=false;
           }
       }
     }
@@ -518,9 +586,23 @@ function init() {
 
   survey.onComplete.add(function(result) {
     console.log(JSON.stringify(survey.data));
+
+    var resultData = survey.data;
+    var questions = survey.getAllQuestions();
+    for(var i = 0; i < questions.length; i ++) {
+      var q = questions[i];
+      var key = q.getValueName();
+      //do nothing if question is answered
+      if(resultData[key]) continue;
+      //optionaly ignore invisible questions
+      //if(!q.isVisible) continue;
+      //set null for unanswered questions
+      resultData[key] = null;
+    }
+
     var xhr = new XMLHttpRequest();
 
-    xhr.open("POST", "https://e-reader.azurewebsites.net/taskIMI.php", true);
+    xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/taskIMI.php", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 
@@ -532,9 +614,10 @@ function init() {
         alert('1111'+this.status);
       }
     }
-    xhr.send(JSON.stringify(survey.data));
-    //document.querySelector("#surveyResult").innerHTML =
-    //  "result: " + JSON.stringify(result.data);
+    xhr.send(JSON.stringify(resultData));
+
+    console.log(JSON.stringify(resultData))
+    //document.querySelector('#surveyResult').innerHTML = "result: " + JSON.stringify(resultData);
   });
 
   $("#surveyElement").Survey({
