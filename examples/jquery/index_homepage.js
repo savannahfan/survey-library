@@ -19,7 +19,7 @@ function init() {
 
                 type: "html",
                 name: "consent",
-                html:"<article class='intro'>   <h1 class='intro__heading intro__heading--income title'>           Consent              </h1>    <div class='intro__body wysiwyg'>       <p>Welcome to the final set of questionnaires in the Recreational Reading Behaviour - study!</p>       <p>This survey platform is part of the study and linked together with ORB Reader.</p>       <ul>        \t<li>        \t\tPlease answer all the surveys by clicking on each link on the next page. You can save your responses and return later by signing into ORB Reader and clicking on the same link again that brought you here.        \t</li>        \t<li>        \t\t<p>Please make sure that you respond to these final questionnaires within 2 days, and return to ORB Reader to finish the study once you are done. You will be able to take part in the giveaway by fully completing the study.</p>             \t</li>       </ul>   <p>All answers will be stored anonymously in a secure database.</p>        </div> </article>"
+                html: "<article class='intro'>    <h1 class='intro__heading intro__heading--income title'>                     Consent              </h1>    <div class='intro__body wysiwyg'>       <p>Welcome to the final set of questionnaires in the Recreational Reading Behaviour - study!</p>       <p>This survey platform is part of the study and linked together with ORB Reader.</p>       <ul>        \t<li>        \t\tPlease answer all the surveys by clicking on each link on the next page. You can save your responses and return later by signing into ORB Reader and clicking on the same link again that brought you here.        \t</li>        \t<li>        \t\t<p>Please make sure that you respond to these final questionnaires within 2 days, and return to ORB Reader to finish the study once you are done. You will be able to take part in the giveaway by fully completing the study.</p>             \t</li>       </ul>   <p>All answers will be stored anonymously in a secure database.</p>        </div> </article>"
               }
           ]
         },
@@ -42,8 +42,6 @@ function init() {
                 name: "info",
                 html: "<table><tr><td>Survey 1</td><td><a href='./Task-IMI.html'  target='_blank'>links1</a></td></tr><tr><td>Survey 2</td><td><a href='./E-experience.html'  target='_blank'>links2</a></td></tr><tr><td>Survey 3</td><td><a href='./SWAS.html'  target='_blank'>links3</a></td></tr></table>",
                 //<a href='https://surveyjs.io/create-survey'  target='_blank'>links</a>
-                //html: "<table><tr><td>Survey 1</td><td><a href='./researcher_homepage.html'  target='_blank'>links1</a></td></tr><tr><td>Survey 2</td><td><a href='./E-experience.html'  target='_blank'>links2</a></td></tr><tr><td>Survey 3</td><td><a href='./SWAS.html'  target='_blank'>links3</a></td></tr></table>",
-                
               },
               {
                 type: "radiogroup",
@@ -100,7 +98,7 @@ function init() {
     var xhr = new XMLHttpRequest();
 
 
-    xhr.open("POST", "https://e-reader.azurewebsites.net/homepage.php", true);
+    xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/homepage.php", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 
@@ -108,10 +106,15 @@ function init() {
     if (this.status == 200) {
         alert(this.response);
       }
+    else{
+      alert('!!!'+this.status);
     }
+    }
+
     xhr.send(JSON.stringify(survey.data));
 
   });
+
   //survey.mode = 'display';
 
 
