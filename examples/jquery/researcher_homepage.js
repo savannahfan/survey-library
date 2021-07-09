@@ -6,7 +6,7 @@ function init() {
     title: "Researcher Interface",
     logo: "../edinburgh.png",
     logoPosition: "left",
-    description:"Welcome to our survey system",
+    description:"The Researcher Interface is realized to help researchers to design their own questionnaire automatically. \n\n The workflow is as follows: set the number of questions -> define questions and corresponding question types ->  set the number of tags -> set tags -> annotete the questions with tags -> set the number of relations -> assign relations to the corresponding tags. \n\n The labels depend on the research questions. And the relations should be based on the proposed hypotheses.",
 
     questions: [
             {
@@ -14,14 +14,15 @@ function init() {
             name: "numberOfQuestion",
             title: "Please set the number of question",
             isRequired: true,
+            popupdescription: "If you do not use any of the listed operating system, please select 'others' and type your operating system name.",
             validators: [
                         {
                             type: "numeric",
-                            minValue: 5,
+                            minValue: 1,
                             maxValue: 100
                         }
                       ]
-            },
+            }
 
 
     ]
@@ -29,8 +30,13 @@ function init() {
 
   Survey.StylesManager.applyTheme("default");
 
+
+
+
+
+
   window.survey = new Survey.Model(json);
-  var flag=[0,0,0]
+  var flag=[0,0,0,0]
   survey.onComplete.add(function (result) {
         var questions=[];
         if (survey.currentPage.name=="page1" && flag[0]==0){
@@ -39,7 +45,7 @@ function init() {
         var nothing={};
         nothing["type"]="html";
         nothing["name"]="nothing1";
-        nothing["html"]="<span>Please set the questions with the corresponding question type.</span>";
+        nothing["html"]="<span>Please set the questions with the corresponding question type.</span><br/><span><strong>N.B. Reversed question means the question is expressed in an opposite way, e.g. I didn’t put much energy into the study.</strong></span>";
 
         questions.push(nothing);
 
@@ -55,7 +61,7 @@ function init() {
           var questionType={};
           questionType["type"]="dropdown";
           questionType["startWithNewLine"]=false;
-          questionType["name"]="questiontype"+i;
+          questionType["name"]="questionType"+i;
           questionType["title"]="Please select the question type for Q"+(i+1);
           questionType["choices"]= [
               "rating",
@@ -64,6 +70,15 @@ function init() {
               "boolean"
           ]
           questions.push(questionType);
+
+
+          var questionRev={};
+          questionRev["type"]="boolean";
+          questionRev["startWithNewLine"]=false;
+          questionRev["name"]="questionRev"+i;
+          questionRev["title"]="Is the question expression reversed?";
+
+          questions.push(questionRev);
 
 
         }
@@ -83,7 +98,7 @@ function init() {
         var nothing={};
         nothing["type"]="html";
         nothing["name"]="nothing2";
-        nothing["html"]="<span>Please write down all the tags, including the super class.(Should we have some example of super class?)</span>";
+        nothing["html"]="<span>Please write down all the tags, including the super class.</span><br/><span>E.g. Emotion can be the super class of happiness.</span>";
 
         questions.push(nothing);
 
@@ -117,12 +132,13 @@ function init() {
             questionsContent["html"]="<span>Q"+(i+1)+"</span></br><span>"+survey.getQuestionByName("question"+i).value+"</span>";
             questions.push(questionsContent);
 
+
             var questionsTag={};
-            questionsTag["type"]="dropdown";
+            questionsTag["type"]="tagbox";
             questionsTag["startWithNewLine"]=false;
             questionsTag["name"]="questionTag"+i;
             questionsTag["choices"]= tags;
-            questionsTag["title"]= "Please select tag to the Q"+(i+1)+". N.B. You should select the most specific more.";
+            questionsTag["title"]= "Please select tag to the Q"+(i+1)+". N.B. You should select the most specific tags.";
             questions.push(questionsTag);
             //please annotate with the specifc classes
         }
@@ -144,7 +160,7 @@ function init() {
 
 
 
-          relations=["is_super_class_of","is_disjoint_from"];
+          relations=["is_super_class_of","is_disjoint_from (has_negative_association_with)","has_positive_association_with"];
 
           relationNumber=survey.getQuestionByName('numberOfRelation').value;
           tagNumber=survey.getQuestionByName('numberOfTag').value;
@@ -157,15 +173,16 @@ function init() {
 
           }
 
-        var nothing={};
-        nothing["type"]="html";
-        nothing["name"]="nothing3";
-        nothing["html"]="<span>Relation links the tag1 and tag2.</span>";
+          var nothing={};
+          nothing["type"]="html";
+          nothing["name"]="nothing3";
+          nothing["html"]="Please set the relations between tags";
 
-        questions.push(nothing);
+          questions.push(nothing);
 
 
-        for(var i = 0; i < relationNumber; i ++){
+
+          for(var i = 0; i < relationNumber; i ++){
 
             var Tag1={};
             Tag1["type"]="dropdown";
@@ -192,8 +209,50 @@ function init() {
 
         }
 
+
+
         }
-        else{
+        else if (survey.currentPage.name=="page7"){
+
+              var nothing={};
+              nothing["type"]="html";
+              nothing["name"]="nothing4";
+              nothing["html"]="You can check the knowledge graph by dragging or zooming in.";
+
+              questions.push(nothing);
+              console.log(JSON.stringify(survey.data));
+              var researcher_result=JSON.stringify(survey.data);
+              Cookies.set('researcher_result', researcher_result);
+
+
+              var kg={};
+              kg["type"]="html";
+              kg["name"]="kg";
+              kg["html"]='<iframe width="900" height="600" src="./displayKG.html" align="middle">';
+
+              questions.push(kg);
+        }
+        else{//complete the whole survey
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/researcher.php", true);
+            xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+
+            xhr.onload = function() {
+             if (this.status == 200) {
+                 alert(this.response);
+               }
+             else {
+               alert('1111'+this.status);
+             }
+           }
+           xhr.send(JSON.stringify(survey.data));
+           //xhr.send(survey.data);
+
+
+
           return
         }
 
@@ -233,6 +292,9 @@ function init() {
           if (newPage=="page6"){
             flag[2]=1;
           }
+          if (newPage=="page7"){
+            flag[3]=1;
+          }
       }
       else{
 
@@ -258,7 +320,7 @@ function init() {
                 var questionType={};
                 questionType["type"]="dropdown";
                 questionType["startWithNewLine"]=false;
-                questionType["name"]="questiontype"+i;
+                questionType["name"]="questionType"+i;
                 questionType["title"]="Please select the question type for Q"+(i+1);
                 questionType["choices"]= [
                     "rating",
@@ -267,6 +329,16 @@ function init() {
                     "boolean"
                 ]
                 questions.push(questionType);
+
+
+                var questionRev={};
+                questionRev["type"]="boolean";
+                questionRev["startWithNewLine"]=false;
+                questionRev["name"]="questionRev"+i;
+                questionRev["title"]="Is the question expression reversed?";
+
+                questions.push(questionRev);
+
               }
               console.log("helloooo");
           }
@@ -299,7 +371,7 @@ function init() {
               });
 
               //newPage.questions.forEach(function(question) { newPage.removeQuestion(question) });
-              relations=["is_super_class_of","is_disjoint_from"];
+              relations=["is_super_class_of","is_disjoint_from (has_negative_association_with)","has_positive_association_with"];
 
               relationNumber=survey.getQuestionByName('numberOfRelation').value;
               tagNumber=survey.getQuestionByName('numberOfTag').value;
@@ -340,6 +412,12 @@ function init() {
             }
 
           }
+          else if(oldPage=="page7" && flag[3]==1){
+              researcher_result=JSON.stringify(survey.data);
+              Cookies.set('researcher_result', researcher_result);
+
+          }
+
           else{
             return;
           }
@@ -398,6 +476,11 @@ function init() {
           //set html
           options.html = str;
       });
+
+
+
+
+
 
 
   $("#surveyElement").Survey({
