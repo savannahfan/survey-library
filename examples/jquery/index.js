@@ -3,7 +3,6 @@ function init() {
   Survey.Serializer.addProperty("itemvalue", "price:number");
 
 
-
   var modifyCommentQuestion=function modifyCommentQuestion(value,question) {
       //var value=params[0];
       //var question=params[1];
