@@ -45,7 +45,7 @@ function init() {
         var nothing={};
         nothing["type"]="html";
         nothing["name"]="nothing1";
-        nothing["html"]="<span>Please set the questions with the corresponding question type.</span><br/><span><strong>N.B. Reversed question means the question is expressed in an opposite way, e.g. I didn’t put much energy into the study.</strong></span>";
+        nothing["html"]="<span>Please set the questions <strong>in the order of importance</strong> with the corresponding question type.</span><br/><span><strong>N.B. Reversed question means the question is expressed in an opposite way, e.g. I didn’t put much energy into the study.</strong></span>";
 
         questions.push(nothing);
 
@@ -214,15 +214,17 @@ function init() {
         }
         else if (survey.currentPage.name=="page7"){
 
-              var nothing={};
-              nothing["type"]="html";
-              nothing["name"]="nothing4";
-              nothing["html"]="You can check the knowledge graph by dragging or zooming in.";
 
-              questions.push(nothing);
               console.log(JSON.stringify(survey.data));
               var researcher_result=JSON.stringify(survey.data);
               Cookies.set('researcher_result', researcher_result);
+
+              var nothing={};
+              nothing["type"]="html";
+              nothing["name"]="nothing4";
+              nothing["html"]="<span>You can check the knowledge graph by dragging or zooming in.</span><br/><span>The survey can be preview:<a href='./preview.html'  target='_blank'>link</a></span>";
+
+              questions.push(nothing);
 
 
               var kg={};
@@ -231,6 +233,11 @@ function init() {
               kg["html"]='<iframe width="900" height="600" src="./displayKG.html" align="middle">';
 
               questions.push(kg);
+
+
+
+
+
         }
         else{//complete the whole survey
 
