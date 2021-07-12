@@ -291,7 +291,7 @@ function init() {
             {
               type: "rating",
               name: "overalChoice",
-              title: "Do you feel choice?",
+              title: "Did you feel that you could choose which story you read?",
               minRateDescription: "not at all true",
               maxRateDescription: "very true",
               rateMax: 7,
@@ -300,7 +300,7 @@ function init() {
             {
               type: "rating",
               name: "overalInterest",
-              title: "Do you feel interest?",
+              title: "Did you enjoy reading the story?",
               minRateDescription: "not at all true",
               maxRateDescription: "very true",
               rateMax: 7,
@@ -309,7 +309,7 @@ function init() {
             {
               type: "rating",
               name: "overalCompetence",
-              title: "Do you feel competence?",
+              title: "Did you find the story difficult to read?",
               minRateDescription: "not at all true",
               maxRateDescription: "very true",
               rateMax: 7,
@@ -318,7 +318,7 @@ function init() {
             {
               type: "rating",
               name: "overalEffort",
-              title: "Do you feel effort?",
+              title: "Did you find the story effortful to read?",
               minRateDescription: "not at all true",
               maxRateDescription: "very true",
               rateMax: 7,
@@ -327,7 +327,7 @@ function init() {
             {
               type: "rating",
               name: "overalPressure",
-              title: "Do you feel pressure?",
+              title: "Did you feel pressured when reading the story?",
               minRateDescription: "not at all true",
               maxRateDescription: "very true",
               rateMax: 7,
