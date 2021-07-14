@@ -11,17 +11,20 @@ function GetRequest() {
     return theRequest;
     }
 var con = GetRequest();
-alert(con.eraderId+ " and " + con.bookId)
+var eraderId=con.eraderId;
+var bookId=con.bookId;
+
+
+var eraderId="111";
+var bookId="222";
+
+
+Cookies.set('eraderId', eraderId);
+Cookies.set('bookId', bookId);
 
 
 
 function init() {
-  //Add the price property into choices
-  Survey.Serializer.addProperty("itemvalue", "price:number");
-
-
-  //Register the custom function
-  //Survey.FunctionFactory.Instance.register("getItemPrice", getItemPrice);
 
   var json = {
     showProgressBar: "both",
@@ -46,13 +49,13 @@ function init() {
                 name: "E-Reader ID",
                 type: "text",
                 title: "E-Reader ID",
-                isRequired: true
+                visible:false
               },
               {
                 name: "Book ID",
                 type: "text",
                 title: "Book ID",
-                isRequired: true
+                visible:false
               },
               {
                 type: "html",
@@ -86,54 +89,94 @@ function init() {
 
         ]
       }
-
-
-
-  ]};
+    ],
+      completedHtml:"<h1>Thank you for completing the surveys.</h1> <h2>Please use the following url to go back to the ORB Reader platform : <a href=https://orbreader.com/finish/questionnaire?isDone=1>ORB Reader<a></h2>",
+  };
 
   Survey.StylesManager.applyTheme("default");
 
   window.survey = new Survey.Model(json);
 
-  survey.onCompleting.add(function(sender, options) {
-    if (confirm("Do you finish all the surveys?")){
-      options.allowComplete = true;
-      alert("Thank you!");
-    }
-    else {
-      options.allowComplete = false;
-      console.log('i am not ok!');
-      return;
-    }
-
-  });
 
 
-  survey.onComplete.add(function(result) {
+  function surveyValidateQuestion(survey, options) {
 
-    console.log(JSON.stringify(survey.data));
+    var ereaderQues=survey.getQuestionByName("E-Reader ID");
+    var bookQues=survey.getQuestionByName("Book ID");
+    ereaderQues.value=eraderId;
+    bookQues.value=bookId;
+
     var xhr = new XMLHttpRequest();
 
 
-    xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/homepage.php", true);
+    xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/homepage_checking.php", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 
-    xhr.onload = function() {
-    if (this.status == 200) {
-        alert(this.response);
-      }
-    else{
-      alert('!!!'+this.status);
-    }
-    }
 
     xhr.send(JSON.stringify(survey.data));
+
+    console.log(JSON.stringify(survey.data));
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState==4 && xhr.status==200){
+        console.log("@@@"+xhr.responseText)
+        if(xhr.responseText==3){
+
+          options.complete();
+        }
+        else{
+          options.errors["info"] = "Please finish all the surveys.";
+          //alert("Please finish all the surveys.")
+
+          options.complete();
+        }
+      }
+
+
+
+    }
+
+  };
+
+  survey.onCompleting.add(function(sender, options) {
+      if (confirm("Have you finished all the surveys?")){
+        options.allowComplete = true;
+      }
+      else {
+        options.allowComplete = false;
+        return;
+      }
+
+  });
+
+  survey.onComplete.add(function(result) {
+
+
+      var ereaderQues=survey.getQuestionByName("E-Reader ID");
+      var bookQues=survey.getQuestionByName("Book ID");
+      ereaderQues.value=eraderId;
+      bookQues.value=bookId;
+
+      console.log(JSON.stringify(survey.data));
+      var xhr = new XMLHttpRequest();
+
+
+      xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/homepage.php", true);
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+
+
+      xhr.send(JSON.stringify(survey.data));
+
+
+
 
   });
 
   //survey.mode = 'display';
-
+  survey
+    .onServerValidateQuestions
+    .add(surveyValidateQuestion);
 
   $("#surveyElement").Survey({
     model: survey
