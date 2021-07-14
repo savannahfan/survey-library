@@ -15,8 +15,8 @@ var eraderId=con.eraderId;
 var bookId=con.bookId;
 
 
-var eraderId="111";
-var bookId="222";
+//var eraderId="111";
+//var bookId="222";
 
 
 Cookies.set('eraderId', eraderId);
