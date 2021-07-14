@@ -1,6 +1,8 @@
 function init() {
   //Add the price property into choices
 
+  var eraderId=Cookies.get("eraderId");
+
 
   function sort_object(obj) {
     items = Object.keys(obj).map(function(key) {
@@ -28,9 +30,15 @@ function init() {
     title: "Survey for E-reader",
     logo: "../edinburgh.png",
     logoPosition: "left",
-    description:"Congratulation! You have finished all the readings. Now please fill in the information and complete the following surveys.",
+    description:"The survey is about electronic reading behaviours.",
 
     questions: [
+            {
+              name: "E-Reader ID",
+              type: "text",
+              title: "E-Reader ID",
+              visible:false
+            },
             {
             type: "checkbox",
             name: "overallDevices",
@@ -312,6 +320,8 @@ function init() {
 
 
   survey.onComplete.add(function(result) {
+    var ereaderQues=survey.getQuestionByName("E-Reader ID");
+    ereaderQues.value=eraderId;
     console.log(JSON.stringify(survey.data));
     var xhr = new XMLHttpRequest();
 
@@ -319,14 +329,7 @@ function init() {
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 
-    xhr.onload = function() {
-      if (this.status == 200) {
-          alert(this.response);
-        }
-      else {
-        alert('1111'+this.status);
-      }
-    }
+    
     xhr.send(JSON.stringify(survey.data));
   });
 
