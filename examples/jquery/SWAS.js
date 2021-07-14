@@ -2,6 +2,7 @@ function init() {
   //Add the price property into choices
   Survey.Serializer.addProperty("itemvalue", "price:number");
 
+  var eraderId=Cookies.get("eraderId");
 
 
   var modifyCommentQuestion=function modifyCommentQuestion(value,question) {
@@ -34,6 +35,12 @@ function init() {
     pages: [
       {
           questions: [
+            {
+              name: "E-Reader ID",
+              type: "text",
+              title: "E-Reader ID",
+              visible:false
+            },
             {
               type: "rating",
               name: "transportation1",
@@ -382,6 +389,10 @@ function init() {
 
 
   survey.onComplete.add(function(result) {
+
+    var ereaderQues=survey.getQuestionByName("E-Reader ID");
+    ereaderQues.value=eraderId;
+
     console.log(JSON.stringify(survey.data));
 
     var resultData = survey.data;
@@ -404,14 +415,7 @@ function init() {
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 
-    xhr.onload = function() {
-      if (this.status == 200) {
-          alert(this.response);
-        }
-      else {
-        alert('1111'+this.status);
-      }
-    }
+    
     xhr.send(JSON.stringify(resultData));
     console.log(JSON.stringify(resultData))
 
