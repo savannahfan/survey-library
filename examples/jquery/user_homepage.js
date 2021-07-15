@@ -1,6 +1,12 @@
+var participantId =Cookies.get("participantId");
+
+if (participantId==null){
+    alert("please login");
+    window.location.href="./login.html";
+}
+
 function init() {
-  //Add the price property into choices
-  Survey.Serializer.addProperty("itemvalue", "price:number");
+
 
 
   Array.prototype.indexOf = function(val) {
@@ -19,6 +25,9 @@ function init() {
 
 
   var researcher_result={"numberOfQuestion":"8","question0":"I am question1","questionType0":"boolean","questionRev0":true,"question1":"I am question2","questionType1":"rating","questionRev1":false,"question2":"I am question3","questionType2":"rating","questionRev2":true,"question3":"I am question4","questionType3":"rating","questionRev3":false,"question4":"I am question5","questionType4":"rating","questionRev4":false,"question5":"I am question6","questionType5":"rating","questionRev5":false,"question6":"I am question7","questionType6":"rating","questionRev6":false,"question7":"I am question8","questionType7":"rating","questionRev7":false,"numberOfTag":"4","tag0":"emotion","tag1":"happy","tag2":"sad","tag3":"excited","questionTag0":["sad"],"questionTag1":["excited","happy"],"questionTag2":["excited"],"questionTag3":["happy"],"questionTag4":["sad"],"questionTag5":["excited","happy"],"questionTag6":["sad"],"questionTag7":["excited"],"numberOfRelation":"5","tagInRelation1_0":"emotion","relation0":"is_super_class_of","tagInRelation2_0":"happy","tagInRelation1_1":"emotion","relation1":"is_super_class_of","tagInRelation2_1":"sad","tagInRelation1_2":"emotion","relation2":"is_super_class_of","tagInRelation2_2":"excited","tagInRelation1_3":"happy","relation3":"has_positive_association_with","tagInRelation2_3":"excited","tagInRelation1_4":"happy","relation4":"is_disjoint_from (has_negative_association_with)","tagInRelation2_4":"sad"};
+
+  var researcher_result = JSON.parse(Cookies.get("researcher_result"));
+
 
   var modifyCommentQuestion=function modifyCommentQuestion(value,question) {
       //var value=params[0];
@@ -298,7 +307,7 @@ function init() {
       title: "User Homepage",
       //logo: "https://surveyjs.io/Content/Images/examples/image-picker/lion.jpg",
       //"completedHtml": "<h3>Thank you for your feedback.</h3> <h5>Your thoughts and ideas will help us to create a great product!</h5>",
-      description:"Each item is on 7-point Likert scale: (1) Totally disagree, (2) Disagree, (3) Neutral, (4) Agree, (5) Totally agree",
+      description:"Each item is on 5-point Likert scale: (1) Totally disagree, (2) Disagree, (3) Neutral, (4) Agree, (5) Totally agree",
       logo: "../edinburgh.png",
       logoPosition: "left",
       clearInvisibleValues: 'none'
