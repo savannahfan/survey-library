@@ -1,3 +1,10 @@
+var researcherId =Cookies.get("researcherId");
+
+if (researcherId==null){
+    alert("please login");
+    window.location.href="./login.html";
+}
+
 
 function init() {
 
@@ -9,6 +16,12 @@ function init() {
     description:"The Researcher Interface is realized to help researchers to design their own questionnaire automatically. \n\n The workflow is as follows: set the number of questions -> define questions and corresponding question types ->  set the number of tags -> set tags -> annotete the questions with tags -> set the number of relations -> assign relations to the corresponding tags. \n\n The labels depend on the research questions. And the relations should be based on the proposed hypotheses.",
 
     questions: [
+            {
+              name: "Researcher ID",
+              type: "text",
+              title: "Researcher ID",
+              visible:false
+            },
             {
             type: "text",
             name: "numberOfQuestion",
@@ -31,13 +44,14 @@ function init() {
   Survey.StylesManager.applyTheme("default");
 
 
-
-
-
-
   window.survey = new Survey.Model(json);
   var flag=[0,0,0,0]
   survey.onComplete.add(function (result) {
+
+        var researcherQues=survey.getQuestionByName("Researcher ID");
+        researcherQues.value=researcherId;
+
+
         var questions=[];
         if (survey.currentPage.name=="page1" && flag[0]==0){
 
@@ -446,28 +460,22 @@ function init() {
 
 
   /*survey.onComplete.add(function (result) {
-         survey.clear(false, true);
-         var addedSurvey = new Survey.Model(Question1);
-         var allAddedQuestions = addedSurvey.getAllQuestions();
-         var page = survey.pages[0];
-         for(var i = 0; i < allAddedQuestions.length; i ++) {
-           page.addQuestion(allAddedQuestions[i]);
-         }
-   var xhr = new XMLHttpRequest();
 
-    xhr.open("POST", "https://e-reader.azurewebsites.net/e-experience.php", true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+     var xhr = new XMLHttpRequest();
+
+      xhr.open("POST", "https://e-reader.azurewebsites.net/e-experience.php", true);
+      xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 
-    xhr.onload = function() {
-      if (this.status == 200) {
-          alert(this.response);
+      xhr.onload = function() {
+        if (this.status == 200) {
+            alert(this.response);
+          }
+        else {
+          alert('1111'+this.status);
         }
-      else {
-        alert('1111'+this.status);
       }
-    }
-    xhr.send(JSON.stringify(survey.data));
+      xhr.send(JSON.stringify(survey.data));
   });*/
 
 
