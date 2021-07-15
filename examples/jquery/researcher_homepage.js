@@ -13,7 +13,7 @@ function init() {
     title: "Researcher Interface",
     logo: "../edinburgh.png",
     logoPosition: "left",
-    description:"The Researcher Interface is realized to help researchers to design their own questionnaire automatically. \n\n The workflow is as follows: set the number of questions -> define questions and corresponding question types ->  set the number of tags -> set tags -> annotete the questions with tags -> set the number of relations -> assign relations to the corresponding tags. \n\n The labels depend on the research questions. And the relations should be based on the proposed hypotheses.",
+    description:"The Researcher Interface is realized to help researchers to design their own questionnaire automatically. Our system can check the consistency between answers via the knowledge-graph-based mechanism -- when the inconsistency appears, it will automatically generate related open-ended questions. \n\n The workflow of the survey design is as follows: set the number of questions -> to define questions and corresponding question types ->  set the number of tags -> set tags -> annotate the questions with tags -> set the number of relations -> assign relations to the corresponding tags. \n\n The labels depend on the research questions. And the relations should be based on the proposed hypotheses.",
 
     questions: [
             {
@@ -59,9 +59,16 @@ function init() {
         var nothing={};
         nothing["type"]="html";
         nothing["name"]="nothing1";
-        nothing["html"]="<span>Please set the questions <strong>in the order of importance</strong> with the corresponding question type.</span><br/><span><strong>N.B. Reversed question means the question is expressed in an opposite way, e.g. I didn’t put much energy into the study.</strong></span>";
+        nothing["html"]="<span>Please set the questions <strong>in the order of importance</strong> (if any) with the corresponding question type.</span><br/><span><strong>N.B.</strong> For question type, compared to <strong> comment </strong> ,<strong> text question </strong> limiting the length of input, is usually designed for short answers.  </span><br/><span><strong>Reversed question means the question is expressed in an opposite way, e.g. I didn’t put much energy into the study.</strong></span>";
 
         questions.push(nothing);
+
+        var isImportant={};
+        isImportant["type"]="boolean";
+        isImportant["name"]="isImportant";
+        isImportant["title"]="Are the questions ordered by importance?";
+
+        questions.push(isImportant);
 
         number=survey.getQuestionByName('numberOfQuestion').value;
 
@@ -112,7 +119,7 @@ function init() {
         var nothing={};
         nothing["type"]="html";
         nothing["name"]="nothing2";
-        nothing["html"]="<span>Please write down all the tags, including the super class.</span><br/><span>E.g. Emotion can be the super class of happiness.</span>";
+        nothing["html"]="<span>Please write down all the tags, including the super class.</span><br/><span>The tags can refer to questionnaire subscales/factors or variables of interest. For example, The Psychological Well-being Scale by Ryff and Singer (1998) measures the super-class (variable of interest or a latent variable) of psychological well-being by 6 dimensions: autonomy, environmental mastery, personal growth, positive relations with others, purpose in life, and self-acceptance. This questionnaire could be given 7 tags, one for the super-class and one for each dimension. You can use a similar method to annotate your questionnaires, however, the selection of tags should be ultimately directed by hypotheses.</span>";
 
         questions.push(nothing);
 
@@ -172,6 +179,12 @@ function init() {
 
         else if (survey.currentPage.name=="page6"){
 
+          var nothing={};
+          nothing["type"]="html";
+          nothing["name"]="nothing3";
+          nothing["html"]="<span>Please set the relations between tags</span>";
+
+          questions.push(nothing);
 
 
           relations=["is_super_class_of","is_disjoint_from (has_negative_association_with)","has_positive_association_with"];
@@ -187,12 +200,6 @@ function init() {
 
           }
 
-          var nothing={};
-          nothing["type"]="html";
-          nothing["name"]="nothing3";
-          nothing["html"]="Please set the relations between tags";
-
-          questions.push(nothing);
 
 
 
@@ -323,7 +330,7 @@ function init() {
           if(oldPage=="page1" && flag[0]==1){
 
               survey.getAllQuestions().forEach(function(question) {
-                    if(question.page==newPage && question.name!="nothing1"){
+                    if(question.page==newPage && question.name!="nothing1" && question.name!="isImportant"){
                         newPage.removeQuestion(question);
                     }
                 });
