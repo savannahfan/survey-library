@@ -78,7 +78,7 @@ function init() {
               {
                 name: "timeForReading",
                 type: "text",
-                title: "How long did you spend on reading this book?",
+                title: "How long do you estimate you spend on reading this book? e.g. 3 hours",
                 isRequired: true
               },
               {
@@ -104,7 +104,7 @@ function init() {
 
     var ereaderQues=survey.getQuestionByName("E-Reader ID");
     var bookQues=survey.getQuestionByName("Book ID");
-    ereaderQues.value=ereaderId;
+    ereaderQues.value=eraderId;
     bookQues.value=bookId;
 
     var xhr = new XMLHttpRequest();
@@ -155,7 +155,7 @@ function init() {
 
       var ereaderQues=survey.getQuestionByName("E-Reader ID");
       var bookQues=survey.getQuestionByName("Book ID");
-      ereaderQues.value=ereaderId;
+      ereaderQues.value=eraderId;
       bookQues.value=bookId;
 
       console.log(JSON.stringify(survey.data));
