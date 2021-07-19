@@ -1,8 +1,10 @@
+var ereaderId=Cookies.get("ereaderId");
+console.log(ereaderId);
+
 function init() {
   //Add the price property into choices
   Survey.Serializer.addProperty("itemvalue", "price:number");
 
-  var eraderId=Cookies.get("eraderId");
 
   var modifyCommentQuestion=function modifyCommentQuestion(value,question) {
       //var value=params[0];
@@ -592,7 +594,7 @@ function init() {
 
   survey.onComplete.add(function(result) {
     var ereaderQues=survey.getQuestionByName("E-Reader ID");
-    ereaderQues.value=eraderId;
+    ereaderQues.value=ereaderId;
 
     console.log(JSON.stringify(survey.data));
 
