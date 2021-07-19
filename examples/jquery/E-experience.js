@@ -1,7 +1,7 @@
 function init() {
   //Add the price property into choices
 
-  var eraderId=Cookies.get("eraderId");
+  var ereaderId=Cookies.get("ereaderId");
 
 
   function sort_object(obj) {
@@ -321,7 +321,7 @@ function init() {
 
   survey.onComplete.add(function(result) {
     var ereaderQues=survey.getQuestionByName("E-Reader ID");
-    ereaderQues.value=eraderId;
+    ereaderQues.value=ereaderId;
     console.log(JSON.stringify(survey.data));
     var xhr = new XMLHttpRequest();
 
@@ -329,7 +329,7 @@ function init() {
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 
-    
+
     xhr.send(JSON.stringify(survey.data));
   });
 
