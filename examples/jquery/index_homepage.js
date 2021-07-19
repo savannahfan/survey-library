@@ -11,15 +11,16 @@ function GetRequest() {
     return theRequest;
     }
 var con = GetRequest();
-var eraderId=con.eraderId;
+
+
+var ereaderId="55";
+var bookId="222";
+
+var ereaderId=con.ereaderId;
 var bookId=con.bookId;
 
 
-//var eraderId="111";
-//var bookId="222";
-
-
-Cookies.set('eraderId', eraderId);
+Cookies.set('ereaderId', ereaderId);
 Cookies.set('bookId', bookId);
 
 
