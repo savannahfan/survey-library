@@ -10,14 +10,18 @@ function GetRequest() {
 	}
     return theRequest;
     }
+
 var con = GetRequest();
 
 
-var ereaderId="55";
-var bookId="222";
-
 var ereaderId=con.ereaderId;
 var bookId=con.bookId;
+
+
+if(!ereaderId){
+	alert("Please using the link from ORB Reader to this page. Othervise, the records the will not be saved!");
+	window.location.href="https://orbreader.com";
+}
 
 
 Cookies.set('ereaderId', ereaderId);
