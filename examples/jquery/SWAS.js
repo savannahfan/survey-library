@@ -131,7 +131,7 @@ function init() {
               type: "rating",
               name: "attention3",
               isRequired: true,
-              title: "When I was reading the story I was focused on what happened in the stor",
+              title: "When I was reading the story I was focused on what happened in the story",
               minRateDescription: "Totally disagree",
               maxRateDescription: "Totally agree",
               rateMax: 7,
