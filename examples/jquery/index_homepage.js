@@ -108,7 +108,7 @@ function init() {
 
     var ereaderQues=survey.getQuestionByName("E-Reader ID");
     var bookQues=survey.getQuestionByName("Book ID");
-    ereaderQues.value=eraderId;
+    ereaderQues.value=ereaderId;
     bookQues.value=bookId;
 
     var xhr = new XMLHttpRequest();
@@ -159,7 +159,7 @@ function init() {
 
       var ereaderQues=survey.getQuestionByName("E-Reader ID");
       var bookQues=survey.getQuestionByName("Book ID");
-      ereaderQues.value=eraderId;
+      ereaderQues.value=ereaderId;
       bookQues.value=bookId;
 
       console.log(JSON.stringify(survey.data));
