@@ -124,6 +124,7 @@ function init() {
                   "Short stories or fanfiction",
                   "Textbooks",
                   "Academic journals or conference articles",
+                  "None of these",
               ]
             },
             {
@@ -170,6 +171,7 @@ function init() {
                   "Short stories or fanfiction",
                   "Textbooks",
                   "Academic journals or conference articles",
+                  "None of these",
               ]
             },
             {
