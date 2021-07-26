@@ -21,12 +21,17 @@ function init() {
     this.splice(index, 1);
     }
   };
+  Array.prototype.shuffle = function() {
+    return this.sort(function(a, b) {
+      return Math.random() > 0.5 ? -1:1
+    });
+}
 
 
 
-  var researcher_result={"numberOfQuestion":"8","question0":"I am question1","questionType0":"boolean","questionRev0":true,"question1":"I am question2","questionType1":"rating","questionRev1":false,"question2":"I am question3","questionType2":"rating","questionRev2":true,"question3":"I am question4","questionType3":"rating","questionRev3":false,"question4":"I am question5","questionType4":"rating","questionRev4":false,"question5":"I am question6","questionType5":"rating","questionRev5":false,"question6":"I am question7","questionType6":"rating","questionRev6":false,"question7":"I am question8","questionType7":"rating","questionRev7":false,"numberOfTag":"4","tag0":"emotion","tag1":"happy","tag2":"sad","tag3":"excited","questionTag0":["sad"],"questionTag1":["excited","happy"],"questionTag2":["excited"],"questionTag3":["happy"],"questionTag4":["sad"],"questionTag5":["excited","happy"],"questionTag6":["sad"],"questionTag7":["excited"],"numberOfRelation":"5","tagInRelation1_0":"emotion","relation0":"is_super_class_of","tagInRelation2_0":"happy","tagInRelation1_1":"emotion","relation1":"is_super_class_of","tagInRelation2_1":"sad","tagInRelation1_2":"emotion","relation2":"is_super_class_of","tagInRelation2_2":"excited","tagInRelation1_3":"happy","relation3":"has_positive_association_with","tagInRelation2_3":"excited","tagInRelation1_4":"happy","relation4":"is_disjoint_from (has_negative_association_with)","tagInRelation2_4":"sad"};
+  var researcher_result={"numberOfQuestion":"8","isImportant":false,"question0":"I am question1","questionType0":"text","questionRev0":true,"question1":"I am question2","questionType1":"rating","questionRev1":false,"question2":"I am question3","questionType2":"rating","questionRev2":true,"question3":"I am question4","questionType3":"rating","questionRev3":false,"question4":"I am question5","questionType4":"rating","questionRev4":false,"question5":"I am question6","questionType5":"rating","questionRev5":false,"question6":"I am question7","questionType6":"rating","questionRev6":false,"question7":"I am question8","questionType7":"rating","questionRev7":false,"numberOfTag":"4","tag0":"emotion","tag1":"happy","tag2":"sad","tag3":"excited","questionTag0":["sad"],"questionTag1":["excited","happy"],"questionTag2":["excited"],"questionTag3":["happy"],"questionTag4":["sad"],"questionTag5":["excited","happy"],"questionTag6":["sad"],"questionTag7":["excited"],"numberOfRelation":"5","tagInRelation1_0":"emotion","relation0":"is_super_class_of","tagInRelation2_0":"happy","tagInRelation1_1":"emotion","relation1":"is_super_class_of","tagInRelation2_1":"sad","tagInRelation1_2":"emotion","relation2":"is_super_class_of","tagInRelation2_2":"excited","tagInRelation1_3":"happy","relation3":"has_positive_association_with","tagInRelation2_3":"excited","tagInRelation1_4":"happy","relation4":"is_disjoint_from (has_negative_association_with)","tagInRelation2_4":"sad"};
 
-  var researcher_result = JSON.parse(Cookies.get("researcher_result"));
+  //var researcher_result = JSON.parse(Cookies.get("researcher_result"));
 
 
   var modifyCommentQuestion=function modifyCommentQuestion(value,question) {
@@ -89,11 +94,16 @@ function init() {
     //solve conflicts within subclass
     for(var tag in tags){
           questions=tags[tag];
+          if(researcher_result["isImportant"]==false){
+              questions=questions.shuffle();
+          }
           alternatives=[];
           alternativesIdx=[];
           for(var i=0; i< questions.length; i++){
-              alternatives.push(questions[i][0]);
-              alternativesIdx.push(questions[i][1])
+              if(researcher_result["questionType"+questions[i][1]]=="boolean" || researcher_result["questionType"+questions[i][1]]=="rating" ){
+                alternatives.push(questions[i][0]);
+                alternativesIdx.push(questions[i][1]);
+            }
           }
           //compare values
           markQuestions,newQuestions,attitude=compareQuestions(alternatives,alternativesIdx,markQuestions,newQuestions,tag);
@@ -105,7 +115,7 @@ function init() {
     for(var i=0; i<researcher_result["numberOfRelation"]; i++){
         var tag1=researcher_result["tagInRelation1_"+i];
         var tag2=researcher_result["tagInRelation2_"+i];
-        if(researcher_result["relation"+i]=="has_positive_association_with" && attitudeDict[tag1]!=attitudeDict[tag2] ){
+        if(researcher_result["relation"+i]=="has_positive_association_with" && attitudeDict[tag1]!=attitudeDict[tag2]){
             if (attitudeDict[tag1]=="disagree"){
               questions=tags[tag1];
               tag=tag1;
@@ -117,7 +127,10 @@ function init() {
 
             for(var j=0; j< questions.length; j++){
                 alternatives=[];
-                if(markQuestions.indexOf(questions[j][1])== -1){
+                if(researcher_result["isImportant"]==false){
+                    questions=questions.shuffle();
+                }
+                if(markQuestions.indexOf(questions[j][1])== -1 && (researcher_result["questionType"+questions[j][1]]=="boolean" || researcher_result["questionType"+questions[j][1]]=="rating" ) ){
                     alternatives.push(questions[j][0]);
                     markQuestions.push(questions[j][1]);
                 }
@@ -129,6 +142,7 @@ function init() {
                 var questionsContent={};
                 questionsContent["type"]="comment";
                 questionsContent["name"]="comment"+tag+k;
+                questionsContent["isRequired"]=true;
                 questionsContent["title"]=modifyCommentQuestion(alternatives[k].value,alternatives[k].title);
                 newQuestions.push(questionsContent);
 
@@ -148,8 +162,10 @@ function init() {
                   alternatives=[];
                   for(var j=0; j< questions.length; j++){
                       console.log("####"+markQuestions)
-
-                      if(markQuestions.indexOf(questions[j][1])== -1){
+                      if(researcher_result["isImportant"]==false){
+                          questions=questions.shuffle();
+                      }
+                      if(markQuestions.indexOf(questions[j][1])== -1 && (researcher_result["questionType"+questions[j][1]]=="boolean" || researcher_result["questionType"+questions[j][1]]=="rating" )){
                           alternatives.push(questions[j][0]);
                           markQuestions.push(questions[j][1]);
                       }
@@ -161,6 +177,7 @@ function init() {
                       var questionsContent={};
                       questionsContent["type"]="comment";
                       questionsContent["name"]="comment"+tag+k;
+                      questionsContent["isRequired"]=true;
                       questionsContent["title"]=modifyCommentQuestion(alternatives[k].value,alternatives[k].title);
                       newQuestions.push(questionsContent);
                       count+=1;
@@ -276,6 +293,7 @@ function init() {
           var questionsContent={};
           questionsContent["type"]="comment";
           questionsContent["name"]="comment"+tag+i;
+          questionsContent["isRequired"]=true;
           questionsContent["title"]=modifyCommentQuestion(selectedList[i].value,selectedList[i].title);
           newQuestions.push(questionsContent);
       }
@@ -324,7 +342,7 @@ function init() {
       question["name"]="question"+i;
       question["type"]=researcher_result["questionType"+i];
       question["title"]=researcher_result["question"+i];
-      //question["isRequired"]=true
+      question["isRequired"]=true
       questions.push(question);
   }
   page1["questions"]=questions;
