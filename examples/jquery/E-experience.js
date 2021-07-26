@@ -58,6 +58,7 @@ function init() {
 
             type: "matrix",
             name: "frequency",
+            isRequired: true,
             title: "How often do you use the following devices? ",
             visibleIf: "{overallDevices.length} > 0",
             rowsVisibleIf: "{overallDevices} contains {item}",
@@ -130,6 +131,7 @@ function init() {
             name: "frequencyForDeviceOnRecreation",
             title: "How often do you use the following devices for recreational purpose?",
             visibleIf: "{textTypeForRecreation} notempty",
+            isRequired: true,
             columns: [
               "Rarely, not every year","A few times a year","A few times a month","A few times a week","Everyday"
                 /*{
@@ -175,6 +177,7 @@ function init() {
             name: "frequencyForDeviceOnWork",
             title: "How often do you use the following devices for work or study purpose?",
             visibleIf: "{textTypeForWork} notempty",
+            isRequired: true,
             columns: [
               "Rarely, not every year","A few times a year","A few times a month","A few times a week","Everyday"
                 /*{
