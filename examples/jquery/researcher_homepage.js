@@ -66,6 +66,7 @@ function init() {
         var isImportant={};
         isImportant["type"]="boolean";
         isImportant["name"]="isImportant";
+        isImportant["isRequired"]=true;
         isImportant["title"]="Are the questions ordered by importance?";
 
         questions.push(isImportant);
@@ -76,6 +77,7 @@ function init() {
           var questionsContent={};
           questionsContent["type"]="text";
           questionsContent["name"]="question"+i;
+          questionsContent["isRequired"]=true;
           questionsContent["title"]="Please fill in the question for Q"+(i+1);
           questions.push(questionsContent);
 
@@ -83,6 +85,7 @@ function init() {
           questionType["type"]="dropdown";
           questionType["startWithNewLine"]=false;
           questionType["name"]="questionType"+i;
+          questionType["isRequired"]=true;
           questionType["title"]="Please select the question type for Q"+(i+1);
           questionType["choices"]= [
               "rating",
@@ -97,6 +100,8 @@ function init() {
           questionRev["type"]="boolean";
           questionRev["startWithNewLine"]=false;
           questionRev["name"]="questionRev"+i;
+          questionRev["defaultValue"]=false;
+          questionRev["isRequired"]=true;
           questionRev["title"]="Is the question expression reversed?";
 
           questions.push(questionRev);
@@ -109,6 +114,7 @@ function init() {
         var questionsContent={};
         questionsContent["type"]="text";
         questionsContent["name"]="numberOfTag";
+        questionsContent["isRequired"]=true;
         questionsContent["title"]="Please set the number of tags"
         questions.push(questionsContent);
         //validation
@@ -128,6 +134,7 @@ function init() {
             var questionsContent={};
             questionsContent["type"]="text";
             questionsContent["name"]="tag"+i;
+            questionsContent["isRequired"]=true;
             questionsContent["title"]="Please set Tag"+(i+1);
             questions.push(questionsContent);
 
@@ -159,6 +166,7 @@ function init() {
             questionsTag["startWithNewLine"]=false;
             questionsTag["name"]="questionTag"+i;
             questionsTag["choices"]= tags;
+            questionsTag["isRequired"]=true;
             questionsTag["title"]= "Please select tag to the Q"+(i+1)+". N.B. You should select the most specific tags.";
             questions.push(questionsTag);
             //please annotate with the specifc classes
@@ -169,6 +177,7 @@ function init() {
           var questionsContent={};
           questionsContent["type"]="text";
           questionsContent["title"]="Please set the number of relations";
+          questionsContent["isRequired"]=true;
           questionsContent["name"]="numberOfRelation";
           questions.push(questionsContent);
           //validation
@@ -209,6 +218,7 @@ function init() {
             Tag1["type"]="dropdown";
             Tag1["name"]="tagInRelation1_"+i;
             Tag1["choices"]= tags;
+            Tag1["isRequired"]=true;
             Tag1["title"]= "Tag1 for relation"+(i+1);
             questions.push(Tag1);
 
@@ -217,6 +227,7 @@ function init() {
             tagRelations["startWithNewLine"]=false;
             tagRelations["name"]="relation"+i;
             tagRelations["choices"]= relations;
+            tagRelations["isRequired"]=true;
             tagRelations["title"]= "Relation"+(i+1);
             questions.push(tagRelations);
 
@@ -225,6 +236,7 @@ function init() {
             Tag2["startWithNewLine"]=false;
             Tag2["name"]="tagInRelation2_"+i;
             Tag2["choices"]= tags;
+            Tag2["isRequired"]=true;
             Tag2["title"]= "Tag2 for relation"+(i+1);
             questions.push(Tag2);
 
@@ -342,6 +354,7 @@ function init() {
                 var questionsContent={};
                 questionsContent["type"]="text";
                 questionsContent["name"]="question"+i;
+                questionsContent["isRequired"]=true;
                 questionsContent["title"]="Please fill in the question for Q"+(i+1);
                 questions.push(questionsContent);
 
@@ -349,6 +362,7 @@ function init() {
                 questionType["type"]="dropdown";
                 questionType["startWithNewLine"]=false;
                 questionType["name"]="questionType"+i;
+                questionType["isRequired"]=true;
                 questionType["title"]="Please select the question type for Q"+(i+1);
                 questionType["choices"]= [
                     "rating",
@@ -363,6 +377,7 @@ function init() {
                 questionRev["type"]="boolean";
                 questionRev["startWithNewLine"]=false;
                 questionRev["name"]="questionRev"+i;
+                questionRev["isRequired"]=true;
                 questionRev["title"]="Is the question expression reversed?";
 
                 questions.push(questionRev);
@@ -384,6 +399,7 @@ function init() {
                   var questionsContent={};
                   questionsContent["type"]="text";
                   questionsContent["name"]="tag"+i;
+                  questionsContent["isRequired"]=true;
                   questionsContent["title"]="Please set Tag"+(i+1);
                   questions.push(questionsContent);
 
@@ -418,6 +434,7 @@ function init() {
                 Tag1["type"]="dropdown";
                 Tag1["name"]="tagInRelation1_"+i;
                 Tag1["choices"]= tags;
+                Tag1["isRequired"]=true;
                 Tag1["title"]= "Tag1 for relation"+(i+1);
                 questions.push(Tag1);
 
@@ -426,6 +443,7 @@ function init() {
                 tagRelations["startWithNewLine"]=false;
                 tagRelations["name"]="relation"+i;
                 tagRelations["choices"]= relations;
+                tagRelations["isRequired"]=true;
                 tagRelations["title"]= "Relation"+(i+1);
                 questions.push(tagRelations);
 
@@ -434,6 +452,7 @@ function init() {
                 Tag2["startWithNewLine"]=false;
                 Tag2["name"]="tagInRelation2_"+i;
                 Tag2["choices"]= tags;
+                Tag2["isRequired"]=true;
                 Tag2["title"]= "Tag2 for relation"+(i+1);
                 questions.push(Tag2);
 
