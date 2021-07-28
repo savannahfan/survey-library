@@ -114,10 +114,8 @@ function init() {
     var xhr = new XMLHttpRequest();
 
 
-    xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/homepage_checking.php", true);
+    xhr.open("POST", "https://surveykg.inf.ed.ac.uk/surveykg/homepage_checking.php", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
-
 
     xhr.send(JSON.stringify(survey.data));
 
@@ -162,16 +160,18 @@ function init() {
       ereaderQues.value=ereaderId;
       bookQues.value=bookId;
 
-      console.log(JSON.stringify(survey.data));
+      console.log("complete now",JSON.stringify(survey.data));
       var xhr = new XMLHttpRequest();
 
-
-      xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/homepage.php", true);
+      xhr.open("POST", "https://surveykg.inf.ed.ac.uk/surveykg/homepage.php", true);
       xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-
-
       xhr.send(JSON.stringify(survey.data));
+			xhr.onreadystatechange = function(){
+	      if(xhr.readyState==4 && xhr.status==200){
+	        console.log("finishing"+xhr.responseText)
+				}
+			}
 
 
 
