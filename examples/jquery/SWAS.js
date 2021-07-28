@@ -1,6 +1,5 @@
 function init() {
-  //Add the price property into choices
-  Survey.Serializer.addProperty("itemvalue", "price:number");
+
 
   var ereaderId=Cookies.get("ereaderId");
 
@@ -411,7 +410,7 @@ function init() {
     console.log(JSON.stringify(resultData));
     var xhr = new XMLHttpRequest();
 
-    xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/swas.php", true);
+    xhr.open("POST", "https://surveykg.inf.ed.ac.uk/surveykg/swas.php", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 
