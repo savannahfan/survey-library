@@ -613,7 +613,7 @@ function init() {
 
     var xhr = new XMLHttpRequest();
 
-    xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/taskIMI.php", true);
+    xhr.open("POST", "https://surveykg.inf.ed.ac.uk/surveykg/taskIMI.php", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 
