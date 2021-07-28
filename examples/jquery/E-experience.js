@@ -330,7 +330,7 @@ function init() {
     console.log(JSON.stringify(survey.data));
     var xhr = new XMLHttpRequest();
 
-    xhr.open("POST", "http://surveykg.inf.ed.ac.uk/surveykg/e-experience.php", true);
+    xhr.open("POST", "https://surveykg.inf.ed.ac.uk/surveykg/e-experience.php", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 
