@@ -414,12 +414,16 @@ function init() {
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
 
-
     xhr.send(JSON.stringify(resultData));
-    console.log(JSON.stringify(resultData))
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState==4 && xhr.status==200){
+        console.log("swas response: "+xhr.responseText)
+      }
+    }
 
-    //document.querySelector("#surveyResult").innerHTML =
-    //  "result: " + JSON.stringify(result.data);
+
+
+
   });
 
   $("#surveyElement").Survey({
