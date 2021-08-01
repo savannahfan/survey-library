@@ -45,6 +45,7 @@ function init() {
             title: "Which of the following devices do you own or have regular access to? Select all that apply",
             isRequired: true,
             colCount: 1,
+            hasNone: true,
             choices: [
                 "Dedicated e-reader with an e-ink screen (such as Kindle Paperwhite, Kobo or Nook)",
                 "Desktop computer",
@@ -60,35 +61,11 @@ function init() {
             name: "frequency",
             isRequired: true,
             title: "How often do you use the following devices? ",
-            visibleIf: "{overallDevices.length} > 0",
+            visibleIf: "{overallDevices.length} > 0 and {overallDevices} notcontains 'none'",
             rowsVisibleIf: "{overallDevices} contains {item}",
             columns: [
               "Once a month", "2-3 times a month", "Once a week", "2-3 times a week", "4-6 times a week", "Once daily", "2-4 times daily","More than 4 times daily"
-                /*{
-                    value: 1,
-                    text: "Once a month"
-                }, {
-                    value: 2,
-                    text: "2-3 times a month"
-                }, {
-                    value: 3,
-                    text: "Once a week"
-                }, {
-                    value: 4,
-                    text: "2-3 times a week"
-                }, {
-                    value: 5,
-                    text: "4-6 times a week"
-                }, {
-                    value: 6,
-                    text: "Once daily"
-                }, {
-                    value: 7,
-                    text: "2-4 times daily"
-                }, {
-                    value: 8,
-                    text: "More than 4 times daily"
-                }*/
+
               ],
               rows: [
                   "Dedicated e-reader with an e-ink screen (such as Kindle Paperwhite, Kobo or Nook)",
@@ -102,6 +79,7 @@ function init() {
             type: "checkbox",
             name: "devicesForReading",
             visibleIf: "{frequency} notempty",
+            hasNone: true,
             title: "Which of the following devices do you use for reading? The reading can be done recreationally or for work or study purposes. [What we mean by reading DO NOT include reading tweets or web browsing.] Select all that apply",
             isRequired: true,
             colCount: 1,
@@ -111,10 +89,11 @@ function init() {
             {
             type: "checkbox",
             name: "textTypeForRecreation",
-            visibleIf: "{devicesForReading} notempty",
+            visibleIf: "{devicesForReading} notempty and {devicesForReading} notcontains 'none'",
             title: "Which of the following text types have you read electronically for recreational purposes? Select all that apply",
             isRequired: true,
             colCount: 1,
+            hasNone: true,
             choices: [
                   "Fiction books",
                   "Nonfiction books",
@@ -124,33 +103,16 @@ function init() {
                   "Short stories or fanfiction",
                   "Textbooks",
                   "Academic journals or conference articles",
-                  "None of these",
               ]
             },
             {
             type: "matrix",
             name: "frequencyForDeviceOnRecreation",
             title: "How often do you use the following devices for recreational purpose?",
-            visibleIf: "{textTypeForRecreation} notempty",
+            visibleIf: "{textTypeForRecreation} notempty and {textTypeForRecreation} notcontains 'none'",
             isRequired: true,
             columns: [
               "Rarely, not every year","A few times a year","A few times a month","A few times a week","Everyday"
-                /*{
-                    value: 1,
-                    text: "Rarely, not every year"
-                }, {
-                    value: 2,
-                    text: "A few times a year"
-                }, {
-                    value: 3,
-                    text: "A few times a month"
-                }, {
-                    value: 4,
-                    text: "A few times a week"
-                }, {
-                    value: 5,
-                    text: "Everyday"
-                }*/
               ],
               rows: [
               ]
@@ -158,10 +120,11 @@ function init() {
             {
             type: "checkbox",
             name: "textTypeForWork",
-            visibleIf: "{devicesForReading} notempty",
+            visibleIf: "{devicesForReading} notempty and {devicesForReading} notcontains 'none'",
             title: "Which of the following text types have you read electronically for work or study? Select all that apply",
             isRequired: true,
             colCount: 1,
+            hasNone: true,
             choices: [
                   "Fiction books",
                   "Nonfiction books",
@@ -171,33 +134,17 @@ function init() {
                   "Short stories or fanfiction",
                   "Textbooks",
                   "Academic journals or conference articles",
-                  "None of these",
               ]
             },
             {
             type: "matrix",
             name: "frequencyForDeviceOnWork",
             title: "How often do you use the following devices for work or study purpose?",
-            visibleIf: "{textTypeForWork} notempty",
+            visibleIf: "{textTypeForWork} notempty and {textTypeForWork} notcontains 'none' ",
             isRequired: true,
             columns: [
               "Rarely, not every year","A few times a year","A few times a month","A few times a week","Everyday"
-                /*{
-                    value: 1,
-                    text: "Rarely, not every year"
-                }, {
-                    value: 2,
-                    text: "A few times a year"
-                }, {
-                    value: 3,
-                    text: "A few times a month"
-                }, {
-                    value: 4,
-                    text: "A few times a week"
-                }, {
-                    value: 5,
-                    text: "Everyday"
-                }*/
+
               ],
               rows: [
               ]
@@ -239,10 +186,41 @@ function init() {
   Survey.StylesManager.applyTheme("default");
 
   window.survey = new Survey.Model(json);
+  //==================none option==================
+
+  survey.onValueChanged.add(function(survey, options){
+
+    if (options.name !== 'overallDevices') return;
+
+    var answers=options.value;
+
+    if (answers=="none" || answers=="Other device with internet access such as a smartwatch or an iPod" ){
+        frequency=survey.getQuestionByName("frequency");
+        frequency.visible=false;
+    }
+  });
+
+  survey.onValueChanged.add(function(survey, options){
+
+    if (options.name !== 'devicesForReading') return;
+
+    var answers=options.value;
+
+    if (answers=="none" ){
+        textTypeForWork=survey.getQuestionByName("textTypeForWork");
+        textTypeForWork.visible=false;
+        textTypeForRecreation=survey.getQuestionByName("textTypeForRecreation");
+        textTypeForRecreation.visible=false;
+
+    }
+  });
+
+
+  //==================none option==================
+
   survey.onValueChanged.add(function(survey, options){
 
     if (options.name !== 'frequency') return;
-    //console.log(options.value);
 
     var answers=options.value;
     var sorted_answers =sort_object(answers);
@@ -252,15 +230,24 @@ function init() {
 
     }
     console.log(results);
-
-
     devicesForReading=survey.getQuestionByName("devicesForReading");
     devicesForReading.choices=results;
   });
 
-  survey.onValueChanged.add(function(survey, options){
 
+
+  survey.onValueChanged.add(function(survey, options){
+    //==================recreation==================
     if (options.name !== 'textTypeForRecreation') return;
+
+    var answers=options.value;
+
+    if (answers=="none"){
+        frequencyForDeviceOnRecreation=survey.getQuestionByName("frequencyForDeviceOnRecreation");
+        frequencyForDeviceOnRecreation.visible=false;
+        return;
+    }
+
     //console.log(options.value);
     textTypeForRecreation=options.value;
     devicesForReading=survey.getQuestionByName("devicesForReading").value;
@@ -286,23 +273,28 @@ function init() {
 
     }
 
-
-
-
   });
 
 
   survey.onValueChanged.add(function(survey, options){
-
+    //==================work==================
     if (options.name !== 'textTypeForWork') return;
-    //console.log(options.value);
+
+    var answers=options.value;
+
+    if (answers=="none"){
+        frequencyForDeviceOnWork=survey.getQuestionByName("frequencyForDeviceOnWork");
+        frequencyForDeviceOnWork.visible=false;
+        return;
+    }
+
+
     textTypeForWork=options.value;
     textTypeForRecreation=survey.getQuestionByName("textTypeForRecreation").value;
     devicesForReading=survey.getQuestionByName("devicesForReading").value;
 
-    questionLimit=45-textTypeForRecreation.length*devicesForReading.length;
-    console.log('______'+questionLimit)
 
+    questionLimit=45-textTypeForRecreation.length*devicesForReading.length;
 
     var results=[];
     var questionNum=0;
@@ -316,8 +308,14 @@ function init() {
       }
 
 
-    devicesForReading=survey.getQuestionByName("frequencyForDeviceOnWork");
-    devicesForReading.rows=results;
+
+    if(textTypeForRecreation=="none" ){
+      frequencyForDeviceOnRecreation=survey.getQuestionByName("frequencyForDeviceOnRecreation");
+      frequencyForDeviceOnRecreation.visible=false;
+    }
+
+    frequencyForDeviceOnWork=survey.getQuestionByName("frequencyForDeviceOnWork");
+    frequencyForDeviceOnWork.rows=results;
 
 
   });
@@ -325,17 +323,40 @@ function init() {
 
 
   survey.onComplete.add(function(result) {
+
     var ereaderQues=survey.getQuestionByName("E-Reader ID");
     ereaderQues.value=ereaderId;
-    console.log(JSON.stringify(survey.data));
+
+    var resultData = survey.data;
+    var questions = survey.getAllQuestions();
+    for(var i = 0; i < questions.length; i ++) {
+      var q = questions[i];
+      var key = q.getValueName();
+      //do nothing if question is answered
+      if(resultData[key]) continue;
+      //optionaly ignore invisible questions
+      //if(!q.isVisible) continue;
+      //set null for unanswered questions
+      resultData[key] = null;
+    }
+    console.log(JSON.stringify(resultData));
+
+
+
     var xhr = new XMLHttpRequest();
 
     xhr.open("POST", "https://surveykg.inf.ed.ac.uk/surveykg/e-experience.php", true);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
+    xhr.send(JSON.stringify(resultData));
+
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState==4 && xhr.status==200){
+        console.log("e-experience response: "+xhr.responseText)
+      }
+    }
 
 
-    xhr.send(JSON.stringify(survey.data));
   });
 
 
