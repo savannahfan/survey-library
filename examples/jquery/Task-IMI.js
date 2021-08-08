@@ -1,4 +1,4 @@
-var ereaderId=Cookies.get("ereaderId");
+atvar ereaderId=Cookies.get("ereaderId");
 console.log(ereaderId);
 
 function init() {
@@ -241,7 +241,7 @@ function init() {
               type: "rating",
               name: "interest6",
               isRequired: true,
-              title: "Reading the story did not hold my attention at al",
+              title: "Reading the story did not hold my attention at all",
               minRateDescription: "not at all true",
               maxRateDescription: "very true",
               rateMax: 7,
@@ -520,7 +520,7 @@ function init() {
       if (changeInverseValueDict.hasOwnProperty(m)){
         for(var i=0; i<changeInverseValueDict[m].length; i++){
             var idx=changeInverseValueDict[m][i];
-             alternativesValue[idx]=7-alternativesValue[idx];
+             alternativesValue[idx]=8-alternativesValue[idx];
         }
       }
 
