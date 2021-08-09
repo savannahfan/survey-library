@@ -1,4 +1,4 @@
-atvar ereaderId=Cookies.get("ereaderId");
+var ereaderId=Cookies.get("ereaderId");
 console.log(ereaderId);
 
 function init() {
@@ -620,8 +620,15 @@ function init() {
 
     xhr.send(JSON.stringify(resultData));
 
-    console.log(JSON.stringify(resultData))
-    //document.querySelector('#surveyResult').innerHTML = "result: " + JSON.stringify(resultData);
+
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState==4 && xhr.status==200){
+        console.log("taskIMI response: "+xhr.responseText)
+      }
+    }
+
+
+
   });
 
   $("#surveyElement").Survey({
