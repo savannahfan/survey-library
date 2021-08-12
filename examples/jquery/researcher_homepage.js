@@ -111,6 +111,12 @@ function init() {
         }
         else if (survey.currentPage.name=="page2"){
 
+        var nothing={};
+        nothing["type"]="html";
+        nothing["name"]="nothing5";
+        nothing["html"]="<span>The tags are extracted from the research hypotheses. You can define the number of tags according to the components extracted from the hypotheses. </span><br/><span> For example, the hypothesis \'Participants will have emotional engagement in reading when they are absorbed in the story\' describes a positive relation between the factor \'emotional engagement\' and \'attention\'. Therefore, \'emotional engagement\' and \'attention'\ are the tags, which can be assigned to related questions in the following steps. </span>";
+        questions.push(nothing);
+
         var questionsContent={};
         questionsContent["type"]="text";
         questionsContent["name"]="numberOfTag";
