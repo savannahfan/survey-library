@@ -59,7 +59,7 @@ function init() {
         var nothing={};
         nothing["type"]="html";
         nothing["name"]="nothing1";
-        nothing["html"]="<span>Please set the questions <strong>in the order of importance</strong> (if any) with the corresponding question type.</span><br/><span><strong>N.B.</strong> For question type, compared to <strong> comment </strong> ,<strong> text question </strong> limiting the length of input, is usually designed for short answers.  </span><br/><span><strong>Reversed question means the question is expressed in an opposite way, e.g. I didn’t put much energy into the study.</strong></span>";
+        nothing["html"]="<span>Please set the questions <strong>in the order of importance</strong> (if any) with the corresponding question type.</span><br/><span><strong>N.B.</strong> In terms of question type, <strong> text question </strong> limitis the length of input, compared to <strong> comment </strong>.  </span><br/><span><strong>Reversed question means the question is expressed in an opposite way, e.g. I didn’t put much energy into the study.</strong></span>";
 
         questions.push(nothing);
 
